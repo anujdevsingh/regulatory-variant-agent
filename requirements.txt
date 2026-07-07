@@ -1,0 +1,18 @@
+# Core model + attribution
+chrombpnet
+tfmodisco-lite
+modiscolite
+
+# Genomics I/O
+pyfaidx
+pyBigWig
+pysam
+
+# Motifs / JASPAR
+pyjaspar
+biopython
+
+# Scientific stack
+numpy
+pandas
+matplotlib

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Large genomics data / models (keep out of git — document how to fetch in README/SCOPING)
+*.fasta
+*.fa
+*.fai
+*.bigWig
+*.bw
+*.bam
+*.bai
+*.h5
+*.hdf5
+*.pb
+*.npz
+data/
+models/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
