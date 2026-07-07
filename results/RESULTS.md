@@ -55,7 +55,11 @@ The MEF2 motif genuinely spans the variant, and — by PWM log-odds — the risk
 
 - Single **scATAC-pseudobulk** microglia model; the effect may be on TF *occupancy* or on **BIN1 promoter looping** (a mechanism an accessibility model can't see) rather than on bulk accessibility.
 - Attribution used **expected gradients** (DeepSHAP-equivalent), not the exact DeepLIFT rescale rule of ChromBPNet's packaged `modisco` workflow; scored on the **nobias** count head only.
-- No calibration yet: log2FC +0.026 has **no null-distribution scale** — the next upgrade is to score a background variant set and report a percentile.
+- Attribution scored on the **nobias** count head only; the with-bias model was used as a robustness cross-check (agrees: +0.025 vs +0.026).
+
+## Calibration (added)
+
+The raw log2FC +0.026 was calibrated against **266 real common SNPs sampled from ENCODE brain ATAC-seq peaks**, scored through the same microglia model. rs6733839 lands at the **54th percentile by effect magnitude (z = −0.29)** — right at the median, *not* an outlier. Full detail and figure: [`CALIBRATION.md`](CALIBRATION.md).
 
 ## Files
 

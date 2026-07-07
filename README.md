@@ -21,6 +21,14 @@ python score_variant.py --rsid rs6733839 \
 
 Output: a JSON with the ref/alt accessibility change, ISM localization, and JASPAR motif scan. Point `--model` at any of the six cell-type models; pass `--motifs MA0052.4 MA0497.1 ...` for any JASPAR IDs. Works from `--rsid`, or `--chrom/--pos/--ref/--alt` for un-catalogued variants.
 
+Add `--calibrate PEAK_BED` (an ENCODE narrowPeak `.bed.gz`) to also score a null of common SNPs from those peaks and report the variant's **percentile + z-score** — turning the raw log2FC into a scaled result:
+
+```bash
+python score_variant.py --rsid rs6733839 \
+    --model models/Microglia_chrombpnet_nobias.h5 \
+    --calibrate cortex_peaks.bed.gz --n-null 250 --outdir results/
+```
+
 ## Worked example: rs6733839 (BIN1 / Alzheimer's)
 
 **`rs6733839`** — one of the strongest common Alzheimer's GWAS signals, ~28 kb upstream of **BIN1**.
@@ -35,6 +43,7 @@ Output: a JSON with the ref/alt accessibility change, ISM localization, and JASP
 | Does the risk allele lower microglial accessibility? | **No** — predicted change is tiny and *positive* (log2FC **+0.026**). |
 | Is the effect microglia-specific? | **No** — small and positive in microglia (+0.026, 3rd of 6 by signed effect); largest in inhibitory neurons (+0.229). |
 | Does the model weight the variant base? | **No** — near-zero attribution at the variant; the model weights an adjacent C/T-rich (PU.1-like) element. Two attribution methods agree (r = 0.92). |
+| How big is the effect, on a scale? | **Typical** — calibrated against 266 common SNPs in brain ATAC peaks, rs6733839 is at the **54th percentile** (z = −0.29), i.e. not an outlier ([`CALIBRATION.md`](results/CALIBRATION.md)). |
 
 **Reading:** the MEF2 motif overlap is real and confirmed, but this scATAC-pseudobulk microglia model does **not** reproduce a strong, microglia-selective "risk allele breaks MEF2 → less accessibility" story. That is a legitimate, honestly-reported finding — real biology is messier than the one-line hypothesis, and the tool surfaces that rather than forcing a dramatic answer. See [`results/RESULTS.md`](results/RESULTS.md) for the full analysis and caveats.
 
@@ -49,6 +58,7 @@ rsID / coords
    -> cell-type scan (6 brain models)                        -> is the effect cell-type-specific?
    -> in-silico mutagenesis + expected-gradients attribution -> which bases does the model weight?
    -> JASPAR motif scan (ref vs alt)                          -> which TF motif spans the variant?
+   -> [--calibrate] null of common SNPs in ATAC peaks         -> percentile + z-score (is the effect big?)
 ```
 
 ## Status
@@ -59,7 +69,7 @@ rsID / coords
 - [x] Cell-type specificity scan (6 brain cell types)
 - [x] ISM + DeepSHAP-style attribution + JASPAR motif match
 - [x] One-command reusable tool → [`score_variant.py`](score_variant.py)
-- [ ] Calibration against a null variant background (percentile scale) — next upgrade
+- [x] Calibration against a null variant background — **rs6733839 is at the 54th percentile of common brain-peak SNPs (z = −0.29)**, i.e. a typical effect (`results/CALIBRATION.md`)
 - [ ] Demo video + write-up
 
 ## Data & models

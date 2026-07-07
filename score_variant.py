@@ -119,6 +119,95 @@ def motif_scan(ref_seq, alt_seq, vidx, motif_ids, half=25):
                         delta=round(a[0] - r[0], 2))
     return out
 
+def calibrate(model, obs_log2fc, null_bed, n_null=250, seed=7):
+    """Locate an observed log2FC in a null of common SNPs sampled from an ATAC peak BED.
+
+    Downloads/reads a narrowPeak BED, samples peaks, pulls common SNPs (MAF>=0.05,
+    enriched by low rsID) inside them via Ensembl, scores each ref/alt through the
+    same model, and returns the observed variant's percentile + z-score against the
+    null distribution of |log2FC|. Standard "how big is this effect among accessible
+    common variants" calibration.
+    """
+    import gzip, random
+    rng = random.Random(seed)
+    op = gzip.open if null_bed.endswith(".gz") else open
+    peaks = []
+    with op(null_bed, "rt") as f:
+        for line in f:
+            c = line.split("\t")
+            ch = c[0].replace("chr", "")
+            if ch in {str(i) for i in range(1, 23)} | {"X"} and int(c[2]) - int(c[1]) >= 200:
+                peaks.append((ch, int(c[1]), int(c[2])))
+    rng.shuffle(peaks)
+
+    def overlap_snvs(ch, s, e):
+        mid = (s + e) // 2
+        url = (f"https://rest.ensembl.org/overlap/region/human/{ch}:{mid-450}-{mid+450}"
+               "?feature=variation;content-type=application/json")
+        req = urllib.request.Request(url, headers={"Content-Type": "application/json"})
+        try:
+            recs = json.loads(urllib.request.urlopen(req, timeout=30).read().decode())
+        except Exception:
+            return []
+        out = []
+        for r in recs:
+            rid = r.get("id", "")
+            if not rid.startswith("rs"):
+                continue
+            try:
+                if int(rid[2:]) >= 200_000_000:  # low rsID enriches for common variants
+                    continue
+            except ValueError:
+                continue
+            al = r.get("alleles", [])
+            if len(al) == 2 and all(len(x) == 1 and x in BASES for x in al) and r.get("start") == r.get("end"):
+                out.append((rid, r["seq_region_name"], r["start"], al[0], al[1]))
+        return out
+
+    cand = {}
+    for p in peaks:
+        if len(cand) >= n_null * 4:
+            break
+        for rid, ch, pos, ref, alt in overlap_snvs(*p):
+            cand[rid] = (ch, pos, ref, alt)
+    # MAF filter (batched)
+    ids = list(cand)
+    common = []
+    for i in range(0, len(ids), 200):
+        chunk = ids[i:i + 200]
+        req = urllib.request.Request("https://rest.ensembl.org/variation/human",
+                                     data=json.dumps({"ids": chunk}).encode(),
+                                     headers={"Content-Type": "application/json", "Accept": "application/json"})
+        try:
+            j = json.loads(urllib.request.urlopen(req, timeout=90).read().decode())
+        except Exception:
+            continue
+        for rid, rec in j.items():
+            if rec.get("MAF") is not None and float(rec["MAF"]) >= 0.05:
+                common.append(rid)
+    rng.shuffle(common)
+    common = common[:n_null]
+    # score null
+    null = []
+    for rid in common:
+        ch, pos, ref, alt = cand[rid]
+        try:
+            seq, vidx = fetch_window(ch, pos)
+        except Exception:
+            continue
+        if len(seq) != INPUT_LEN or seq[vidx] != ref:
+            continue
+        s = score(model, seq, seq[:vidx] + alt + seq[vidx + 1:])
+        null.append(s["log2fc"])
+    null = np.array(null)
+    absn = np.abs(null)
+    return {"null_n": int(len(null)),
+            "null_mean": float(null.mean()), "null_sd": float(null.std()),
+            "percentile_signed": float((null < obs_log2fc).mean() * 100),
+            "percentile_abs": float((absn < abs(obs_log2fc)).mean() * 100),
+            "zscore_abs": float((abs(obs_log2fc) - absn.mean()) / absn.std())}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--rsid"); ap.add_argument("--chrom"); ap.add_argument("--pos", type=int)
@@ -127,6 +216,10 @@ def main():
     ap.add_argument("--motifs", nargs="+", default=["MA0052.4", "MA0497.1"],
                     help="JASPAR matrix IDs to scan (default MEF2A, MEF2C)")
     ap.add_argument("--outdir", default="results")
+    ap.add_argument("--calibrate", metavar="PEAK_BED",
+                    help="narrowPeak BED (.bed/.bed.gz); score a common-SNP null from these "
+                         "peaks and report the variant's percentile + z-score")
+    ap.add_argument("--n-null", type=int, default=250, help="null size for --calibrate")
     args = ap.parse_args()
     os.makedirs(args.outdir, exist_ok=True)
     import tensorflow as tf
@@ -149,6 +242,9 @@ def main():
     result["ism_peak_rel"] = int(rel[int(imp.argmax())])
     result["ism_variant_importance"] = float(imp[len(imp)//2])
     result["motifs"] = motif_scan(seq, alt_seq, vidx, args.motifs)
+    if args.calibrate:
+        result["calibration"] = calibrate(model, result["prediction"]["log2fc"],
+                                           args.calibrate, n_null=args.n_null)
 
     out = os.path.join(args.outdir, f"{name.replace(':','_').replace('>','_')}_result.json")
     json.dump(result, open(out, "w"), indent=2)
