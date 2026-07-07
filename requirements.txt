@@ -1,18 +1,15 @@
-# Core model + attribution
-chrombpnet
-tfmodisco-lite
-modiscolite
+# Verified against the environment that actually produced results/ (Python 3.10).
+# The microglia model is a plain Keras .h5 loaded directly with TensorFlow —
+# the `chrombpnet` pip package is NOT required to score a variant.
 
-# Genomics I/O
-pyfaidx
-pyBigWig
-pysam
-
-# Motifs / JASPAR
-pyjaspar
-biopython
-
-# Scientific stack
-numpy
+tensorflow==2.13.*
+numpy<2
+scipy
 pandas
 matplotlib
+h5py
+
+# Optional — only if you want the packaged TF-MoDISco motif-discovery workflow
+# (not used by score_variant.py):
+# chrombpnet
+# modisco-lite

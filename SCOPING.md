@@ -139,3 +139,22 @@ Both ship fold-change bigWigs (ChromBPNet input), IDR peaks (training regions), 
 | ENCODE ATAC-seq (cerebellum / cortex) | ENCSR802GEV · ENCSR729FNL |
 
 *DOIs/PMID confirmed via Crossref and NCBI; rs6733839 coordinates, JASPAR matrices, and ENCODE accessions confirmed against live APIs.*
+
+
+---
+
+## Part 4 — Results (this supersedes the "expected" language above)
+
+The pipeline was executed end-to-end on the **microglia ChromBPNet model** (Zenodo 10.5281/zenodo.10605867, Corces scATAC pseudobulk). The results **revised the going-in hypothesis** — recorded here honestly rather than rewriting §3 to match.
+
+**What was expected (§3.1, §3.3):** risk allele T *lowers* microglial accessibility (negative Δ), ISM lands on the variant base, MEF2 match *weakens*.
+
+**What the model actually gave:**
+- **Effect is tiny and positive**, not negative: log2FC **+0.026** (risk T vs ref C).
+- **Not microglia-specific:** microglia ranks 4th of 6 brain cell types; largest effect in inhibitory neurons (+0.229). All |log2FC| < 0.25.
+- **The variant base carries near-zero attribution** (expected-gradients +0.004; ISM importance 0.068). The model weights an **adjacent C/T-rich (PU.1-like) element** at +5…+15 bp instead. Two attribution methods agree (r = 0.92).
+- **MEF2 motif overlap confirmed** (JASPAR): MEF2A MA0052.4 and MEF2C MA0497.1 both span the variant. By PWM log-odds the risk allele *strengthens* the MEF2 match (Δ +5.44 / +5.06) — consistent with the small positive accessibility change, opposite the "weakens" expectation.
+
+**Reading:** the motif-level hypothesis (variant in a MEF2 site) holds; the accessibility-mechanism hypothesis (risk lowers microglia-specific accessibility) is **not reproduced** by this scATAC-pseudobulk model. Caveats from §3.4 that turned out to matter: the effect may be on TF occupancy or BIN1 promoter looping (invisible to an accessibility model), and a single pseudobulk model is noisy. Full numbers, figures, and caveats: [`results/RESULTS.md`](results/RESULTS.md).
+
+**Next rigor upgrade (not yet done):** calibrate log2FC against a null variant background to convert the raw number into a percentile, and average model folds to reduce noise.

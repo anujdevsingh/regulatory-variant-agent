@@ -1,0 +1,11 @@
+{
+  "variant": "rs6733839 (chr2:127,135,234 GRCh38, C>T; risk allele=T)",
+  "model": "Microglia_chrombpnet_nobias.h5 (PsychENCODE/Weng, Corces scATAC pseudobulk, zenodo.10605867)",
+  "accessibility_log2FC_alt_vs_ref": 0.0264,
+  "profile_JSD": 0.0168,
+  "MEF2A_MA0052.4_ref_ov": 5.51,
+  "MEF2A_MA0052.4_alt_ov": 10.95,
+  "MEF2A_delta": 5.44,
+  "MEF2C_MA0497.1_delta": 5.06,
+  "SPI1_PU1_overlaps_variant": false
+}
