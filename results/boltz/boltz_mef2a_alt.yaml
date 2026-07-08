@@ -1,0 +1,14 @@
+version: 1
+sequences:
+  - protein:
+      id: A
+      sequence: GRKKIQITRIMDERNRQVTFTKRKFGLMKKAYELSVLCDCEIALIIFNSSNKLFQYASTDMDKVLLKYTEY
+  - protein:
+      id: B
+      sequence: GRKKIQITRIMDERNRQVTFTKRKFGLMKKAYELSVLCDCEIALIIFNSSNKLFQYASTDMDKVLLKYTEY
+  - dna:
+      id: E
+      sequence: AAAGGTATTTTTAACTT
+  - dna:
+      id: F
+      sequence: TAATTAAAAATACGCTT
