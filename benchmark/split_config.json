@@ -1,0 +1,32 @@
+{
+  "split_name": "chrom_holdout_v1",
+  "created": "2026-07-08",
+  "seed": 0,
+  "rule": "split by chromosome (never by variant); whole chromosomes assigned to test",
+  "test_chromosomes": [
+    "2",
+    "6",
+    "11",
+    "19"
+  ],
+  "forced_test": [
+    "2"
+  ],
+  "forced_test_reason": "chr2 holds the BIN1/rs6733839 grounding locus and the validated directional failure",
+  "test_selection": "chr2 forced, then add on-wedge-densest chromosomes until >=22% of variants are in test",
+  "onwedge_contexts": [
+    "immune (THP-1 macrophage)",
+    "microglia (HMC3)",
+    "brain (mouse tissue MPRA)"
+  ],
+  "n_total": 2157,
+  "n_test": 543,
+  "n_train": 1614,
+  "pct_test": 25.17,
+  "n_test_onwedge": 71,
+  "n_train_onwedge": 63,
+  "rs6733839_fold": "test",
+  "source_data": "benchmark/harmonized_variants.csv",
+  "direction_convention": "direction = sign(activity_alt - activity_ref) in the variant's cell context",
+  "leakage_guard": "no variant appears in both folds; whole chromosomes are held out so no cis-locus spans the split"
+}
