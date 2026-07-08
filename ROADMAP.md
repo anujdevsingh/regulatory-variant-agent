@@ -117,4 +117,4 @@ scorer needs. Report honestly whichever way it comes out.
 | Date | Decision |
 |---|---|
 | 2026-07-08 | Committed AlphaGenome results; wired `--credible-set` flag; added DATA.md. Ran GTEx bulk eQTL (mixed/diluted). Created this roadmap. **Next decision pending from user.** |
-| 2026-07-08 (s2) | **Chose route #1: borrow public MPRA measured data.** Found Cooper 2022 + 2025 context-dependent AD MPRA covering rs6733839; built prediction-vs-measurement scorecard (5/6 match). Scientific result upgraded toward STRONG. **Next: user chose to consider route #2 (train our own model) next.** |
+| 2026-07-08 (s2) | **Chose route #1: borrow public MPRA measured data.** Found a 2025 context-dependent AD MPRA preprint covering rs6733839 (Cooper 2022 Science cited as the landmark large-scale AD MPRA for context, full text not retrieved); built prediction-vs-measurement scorecard (5/6 match). Scientific result upgraded toward STRONG. **Next: user chose to consider route #2 (train our own model) next.** |

@@ -118,7 +118,7 @@ rsID / coords
 - [x] Calibration against a null variant background — **rs6733839 is at the 54th percentile of common brain-peak SNPs (z = −0.29)**, i.e. a typical effect (`results/CALIBRATION.md`)
 - [x] Credible-set scan — scored the published fine-mapping credible set (Schwartzentruber 2021, 25 variants); rs6733839 is the causal variant (PP=0.998) but 11th of 25 by predicted effect (`results/ALLELIC_SERIES.md`)
 - [x] Multimodal cross-check — scored rs6733839 through **AlphaGenome** (12,848 tracks, 4 modalities); largest effect is **TF binding (MEF2A, q=0.99)**, independently corroborating the ChromBPNet MEF2/SPI1 motif hit (`results/AG_MULTIMODAL_RESULTS.md`)
-- [x] **MPRA validation** — checked predictions against published measured MPRA data (Cooper 2022 *Science*; context-dependent AD preprint); **5 of 6 predictions confirmed by independent wet-lab measurement** (`results/MPRA_VALIDATION.md`)
+- [x] **MPRA validation** — checked predictions against published measured MPRA data (rs6733839-specific measurements from a 2025 context-dependent AD MPRA preprint; Cooper 2022 *Science* cited as the landmark large-scale AD MPRA for context); **5 of 6 predictions confirmed by independent wet-lab measurement** (`results/MPRA_VALIDATION.md`)
 - [ ] Demo video + write-up
 
 ## Data & models
