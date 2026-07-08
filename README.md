@@ -29,6 +29,17 @@ python score_variant.py --rsid rs6733839 \
     --calibrate cortex_peaks.bed.gz --n-null 250 --outdir results/
 ```
 
+Run `--credible-set` mode to score a **published fine-mapping credible set** through the model and ask whether the fine-mapped variant is also the largest-effect one — the highest-value question after single-variant scoring (GWAS gives a locus, not a variant):
+
+```bash
+python score_variant.py \
+    --credible-set fine_mapping_supp.xlsx --cs-locus BIN1 --cs-min-prob 0.01 \
+    --rsid rs6733839 \
+    --model models/Microglia_chrombpnet_nobias.h5 --outdir results/
+```
+
+It filters the table to the locus, resolves each variant's effect allele, scores ref→alt through the model, and writes a ranked JSON + summary stats (each variant's log2FC, its |effect| rank, and the Spearman correlation between fine-mapping probability and predicted effect). Passing `--rsid` marks that variant as the focus in the output. Column names default to the Schwartzentruber 2021 schema; override any of them with `--cs-col KEY COLNAME` (e.g. `--cs-col prob PP`).
+
 ## Worked example: rs6733839 (BIN1 / Alzheimer's)
 
 **`rs6733839`** — one of the strongest common Alzheimer's GWAS signals, ~28 kb upstream of **BIN1**.
@@ -75,6 +86,7 @@ rsID / coords
    -> in-silico mutagenesis + expected-gradients attribution -> which bases does the model weight?
    -> JASPAR motif scan (ref vs alt)                          -> which TF motif spans the variant?
    -> [--calibrate] null of common SNPs in ATAC peaks         -> percentile + z-score (is the effect big?)
+   -> [--credible-set] score a fine-mapping credible set       -> is the causal variant the largest predicted effect?
 ```
 
 ## Status

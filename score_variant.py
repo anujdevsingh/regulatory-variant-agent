@@ -208,6 +208,121 @@ def calibrate(model, obs_log2fc, null_bed, n_null=250, seed=7):
             "zscore_abs": float((abs(obs_log2fc) - absn.mean()) / absn.std())}
 
 
+# ---------------------------------------------------------------------------
+# Credible-set mode: score a published fine-mapping credible set through the
+# model and ask whether the fine-mapped variant also has the largest effect.
+# ---------------------------------------------------------------------------
+# Default column schema = Schwartzentruber et al. 2021 Nat Genet, Suppl. Table 8
+# (sheet "8-SNP Fine-mapping"). Override any column via the --cs-col-* flags.
+CS_DEFAULT_COLS = dict(locus="locus name", rsid="rsids", pos="pos hg38",
+                       ref="ref", alt="alt", eff="Eff allele",
+                       prob="mean prob", gwas_p="GWAS P")
+
+
+def parse_credible_set(xlsx, locus, min_prob=0.01, sheet="8-SNP Fine-mapping",
+                       cols=None):
+    """Read a fine-mapping supplementary table and return the credible set.
+
+    Filters to `locus`, keeps biallelic SNVs with fine-mapping probability
+    >= `min_prob`, and resolves which allele to score (the fine-mapping effect
+    allele when it differs from ref; otherwise the alternate). Returns a list
+    of dicts sorted by descending probability.
+    """
+    import pandas as pd
+    c = dict(CS_DEFAULT_COLS, **(cols or {}))
+    df = pd.read_excel(xlsx, sheet_name=sheet, header=0)
+    sub = df[df[c["locus"]].astype(str) == locus].copy()
+    if sub.empty:
+        raise SystemExit(f"no rows for locus {locus!r} in column {c['locus']!r}; "
+                         f"available loci include: "
+                         f"{sorted(df[c['locus']].dropna().astype(str).unique())[:10]}")
+    sub = sub[sub[c["prob"]].astype(float) >= min_prob]
+    rows = []
+    for _, r in sub.iterrows():
+        ref, alt, eff = str(r[c["ref"]]), str(r[c["alt"]]), str(r[c["eff"]])
+        if len(ref) != 1:
+            continue
+        alts = [a for a in alt.split(",") if len(a) == 1 and a in BASES]
+        if not alts:
+            continue
+        if eff in alts and eff != ref:
+            use_alt, src = eff, "effect"
+        elif eff == ref:
+            use_alt, src = alts[0], "eff=ref"
+        else:
+            use_alt, src = alts[0], "first-alt"
+        gp = r[c["gwas_p"]] if c["gwas_p"] in sub.columns else None
+        rows.append(dict(rsid=str(r[c["rsid"]]), pos=int(r[c["pos"]]), ref=ref, alt=use_alt,
+                         eff_allele=eff, allele_src=src, prob=float(r[c["prob"]]),
+                         gwas_p=(float(gp) if gp is not None else None)))
+    rows.sort(key=lambda x: -x["prob"])
+    return rows
+
+
+def credible_set_scan(model, chrom, cs_rows, focus_rsid=None):
+    """Score every variant in a credible set ref->alt and rank by |log2FC|.
+
+    Aligns each variant to the hg38 reference (swapping ref/alt if the deposited
+    ref matches the genome's alt), batch-scores through the model, and reports
+    each variant's log2FC, |effect| rank, and the Spearman correlation between
+    fine-mapping probability and predicted |effect| across the set.
+    """
+    from scipy.stats import spearmanr
+    prepped, skipped = {}, {}
+    for v in cs_rows:
+        try:
+            seq, _, vidx = fetch_window(chrom, v["pos"])
+        except Exception as ex:
+            skipped[v["rsid"]] = repr(ex)[:60]; continue
+        if len(seq) != INPUT_LEN:
+            skipped[v["rsid"]] = "bad window length"; continue
+        g = seq[vidx]
+        if g == v["ref"]:
+            r0, a0 = v["ref"], v["alt"]
+        elif g == v["alt"]:
+            r0, a0 = v["alt"], v["ref"]
+        else:
+            skipped[v["rsid"]] = f"genome({g})!=ref/alt({v['ref']}/{v['alt']})"; continue
+        prepped[v["rsid"]] = (seq, seq[:vidx] + a0 + seq[vidx + 1:], r0, a0, v)
+    if not prepped:
+        raise SystemExit("no credible-set variants could be aligned to the genome")
+
+    rids = list(prepped)
+    Xref = np.stack([onehot(prepped[r][0]) for r in rids])
+    Xalt = np.stack([onehot(prepped[r][1]) for r in rids])
+    lcr = predict(model, Xref)[1]
+    lca = predict(model, Xalt)[1]
+    log2fc = (lca - lcr) / np.log(2)
+
+    rows = []
+    for i, r in enumerate(rids):
+        seq, alt_seq, r0, a0, v = prepped[r]
+        rows.append(dict(rsid=r, pos=v["pos"], ref=r0, alt=a0, allele_src=v["allele_src"],
+                         prob=v["prob"], gwas_p=v["gwas_p"],
+                         log2fc=float(log2fc[i]), abs=float(abs(log2fc[i]))))
+    # |effect| rank (1 = largest)
+    order = sorted(range(len(rows)), key=lambda i: -rows[i]["abs"])
+    for rank, i in enumerate(order, 1):
+        rows[i]["effect_rank"] = rank
+    rows.sort(key=lambda x: -x["prob"])
+
+    probs = np.array([x["prob"] for x in rows])
+    absfc = np.array([x["abs"] for x in rows])
+    rho, p = (spearmanr(probs, absfc) if len(rows) > 2 else (float("nan"), float("nan")))
+    top = max(rows, key=lambda x: x["abs"])
+    stats = dict(n=len(rows), n_skipped=len(skipped), skipped=skipped,
+                 spearman_rho=float(rho), spearman_p=float(p),
+                 top_prob_variant=rows[0]["rsid"], top_prob=rows[0]["prob"],
+                 top_prob_effect_rank=rows[0]["effect_rank"],
+                 top_effect_variant=top["rsid"], top_effect_abs=top["abs"], top_effect_prob=top["prob"])
+    if focus_rsid:
+        f = next((x for x in rows if x["rsid"] == focus_rsid), None)
+        if f:
+            stats["focus"] = dict(rsid=focus_rsid, prob=f["prob"],
+                                  log2fc=f["log2fc"], effect_rank=f["effect_rank"], of=len(rows))
+    return rows, stats
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--rsid"); ap.add_argument("--chrom"); ap.add_argument("--pos", type=int)
@@ -220,7 +335,47 @@ def main():
                     help="narrowPeak BED (.bed/.bed.gz); score a common-SNP null from these "
                          "peaks and report the variant's percentile + z-score")
     ap.add_argument("--n-null", type=int, default=250, help="null size for --calibrate")
+    # credible-set mode
+    ap.add_argument("--credible-set", metavar="TABLE.xlsx",
+                    help="fine-mapping supplementary table (.xlsx); score its credible set "
+                         "for a locus through the model and rank variants by predicted effect")
+    ap.add_argument("--cs-locus", default="BIN1",
+                    help="locus name to filter the credible-set table to (default BIN1)")
+    ap.add_argument("--cs-min-prob", type=float, default=0.01,
+                    help="min fine-mapping probability to include (default 0.01)")
+    ap.add_argument("--cs-chrom", default="2",
+                    help="chromosome of the credible-set locus (default 2, for BIN1)")
+    ap.add_argument("--cs-sheet", default="8-SNP Fine-mapping",
+                    help="worksheet name in the credible-set table")
+    ap.add_argument("--cs-col", nargs=2, action="append", metavar=("KEY", "COLNAME"),
+                    default=[], help="override a column mapping, e.g. --cs-col prob 'PP'. "
+                    f"keys: {', '.join(CS_DEFAULT_COLS)}")
     args = ap.parse_args()
+
+    # ---- credible-set mode: standalone, does not need a single --rsid/coords ----
+    if args.credible_set:
+        os.makedirs(args.outdir, exist_ok=True)
+        import tensorflow as tf
+        cols = {k: v for k, v in args.cs_col}
+        cs_rows = parse_credible_set(args.credible_set, args.cs_locus,
+                                     min_prob=args.cs_min_prob, sheet=args.cs_sheet, cols=cols)
+        model = tf.keras.models.load_model(args.model, compile=False)
+        focus = args.rsid if args.rsid else None
+        rows, stats = credible_set_scan(model, args.cs_chrom, cs_rows, focus_rsid=focus)
+        base = os.path.join(args.outdir, f"credible_set_{args.cs_locus}")
+        json.dump(rows, open(base + ".json", "w"), indent=2)
+        json.dump(stats, open(base + "_stats.json", "w"), indent=2)
+        print(json.dumps(stats, indent=2))
+        print(f"\ncredible set ({stats['n']} variants, {stats['n_skipped']} skipped), "
+              f"ranked by fine-mapping probability:")
+        for r in rows:
+            mark = "  <-- focus" if focus and r["rsid"] == focus else ""
+            print(f"  {r['rsid']:14s} PP={r['prob']:.3f}  log2FC={r['log2fc']:+.4f}  "
+                  f"|effect| rank {r['effect_rank']}/{stats['n']}{mark}")
+        print(f"\nSpearman(prob, |effect|) rho={stats['spearman_rho']:+.3f} "
+              f"p={stats['spearman_p']:.3f}")
+        print(f"written: {base}.json, {base}_stats.json")
+        return
     os.makedirs(args.outdir, exist_ok=True)
     import tensorflow as tf
 
