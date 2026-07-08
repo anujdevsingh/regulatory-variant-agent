@@ -78,6 +78,21 @@ The ChromBPNet result left a puzzle: rs6733839 is the fine-mapped **causal** var
 
 ![AlphaGenome multimodal cross-check](results/fig6_alphagenome_multimodal.png)
 
+### Validated against measured wet-lab data (MPRA)
+
+We went one step past prediction: we found **published MPRA data** (massively
+parallel reporter assays — real measured transcriptional activity) that tested
+rs6733839, and checked our predictions against it (Cooper et al. 2022 *Science*;
+a 2025 context-dependent AD MPRA preprint). **5 of 6 of our predictions are
+confirmed by independent measurement** — the variant is functional, its effect is
+subtle (SNP-centered MPRA sees no significant effect, matching our "54th
+percentile"), the mechanism is TF binding, and the TFs are MEF2 + SPI1. The one
+miss — direction in immune cells — reveals that rs6733839 acts as a
+*context-dependent repressor*, a documented limit of single-locus sequence
+models. Full scorecard + honest reading: [`results/MPRA_VALIDATION.md`](results/MPRA_VALIDATION.md).
+
+![prediction vs measured MPRA](results/fig7_mpra_validation.png)
+
 ## Pipeline
 
 ```
@@ -102,6 +117,7 @@ rsID / coords
 - [x] Calibration against a null variant background — **rs6733839 is at the 54th percentile of common brain-peak SNPs (z = −0.29)**, i.e. a typical effect (`results/CALIBRATION.md`)
 - [x] Credible-set scan — scored the published fine-mapping credible set (Schwartzentruber 2021, 25 variants); rs6733839 is the causal variant (PP=0.998) but 11th of 25 by predicted effect (`results/ALLELIC_SERIES.md`)
 - [x] Multimodal cross-check — scored rs6733839 through **AlphaGenome** (12,848 tracks, 4 modalities); largest effect is **TF binding (MEF2A, q=0.99)**, independently corroborating the ChromBPNet MEF2/SPI1 motif hit (`results/AG_MULTIMODAL_RESULTS.md`)
+- [x] **MPRA validation** — checked predictions against published measured MPRA data (Cooper 2022 *Science*; context-dependent AD preprint); **5 of 6 predictions confirmed by independent wet-lab measurement** (`results/MPRA_VALIDATION.md`)
 - [ ] Demo video + write-up
 
 ## Data & models
