@@ -1,0 +1,11 @@
+{
+  "n": 25,
+  "spearman_rho": 0.15618388440480283,
+  "spearman_p": 0.45594969698282,
+  "rs6733839_PP": 0.998437,
+  "rs6733839_effect_rank": 11,
+  "top_effect_variant": "rs12475915",
+  "top_effect_abs": 0.1727551966905594,
+  "top_effect_PP": 0.0124834640675503,
+  "source": "Schwartzentruber et al 2021 Nat Genet, Suppl Table 8 (mean fine-mapping prob)"
+}

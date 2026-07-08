@@ -44,6 +44,7 @@ python score_variant.py --rsid rs6733839 \
 | Is the effect microglia-specific? | **No** — small and positive in microglia (+0.026, 3rd of 6 by signed effect); largest in inhibitory neurons (+0.229). |
 | Does the model weight the variant base? | **No** — near-zero attribution at the variant; the model weights an adjacent C/T-rich (PU.1-like) element. Two attribution methods agree (r = 0.92). |
 | How big is the effect, on a scale? | **Typical** — calibrated against 266 common SNPs in brain ATAC peaks, rs6733839 is at the **54th percentile** (z = −0.29), i.e. not an outlier ([`CALIBRATION.md`](results/CALIBRATION.md)). |
+| Is rs6733839 the functional variant at the locus? | **Statistically yes, mechanistically unexplained** — in the published fine-mapping credible set (Schwartzentruber 2021, 25 variants), rs6733839 is the causal variant (posterior **0.998**) but only **11th of 25** by predicted effect; posterior and predicted effect are uncorrelated (ρ=+0.16). Statistical causality and predicted chromatin effect are decoupled ([`ALLELIC_SERIES.md`](results/ALLELIC_SERIES.md)). |
 
 **Reading:** the MEF2 motif overlap is real and confirmed, but this scATAC-pseudobulk microglia model does **not** reproduce a strong, microglia-selective "risk allele breaks MEF2 → less accessibility" story. That is a legitimate, honestly-reported finding — real biology is messier than the one-line hypothesis, and the tool surfaces that rather than forcing a dramatic answer. See [`results/RESULTS.md`](results/RESULTS.md) for the full analysis and caveats.
 
@@ -70,6 +71,7 @@ rsID / coords
 - [x] ISM + DeepSHAP-style attribution + JASPAR motif match
 - [x] One-command reusable tool → [`score_variant.py`](score_variant.py)
 - [x] Calibration against a null variant background — **rs6733839 is at the 54th percentile of common brain-peak SNPs (z = −0.29)**, i.e. a typical effect (`results/CALIBRATION.md`)
+- [x] Credible-set scan — scored the published fine-mapping credible set (Schwartzentruber 2021, 25 variants); rs6733839 is the causal variant (PP=0.998) but 11th of 25 by predicted effect (`results/ALLELIC_SERIES.md`)
 - [ ] Demo video + write-up
 
 ## Data & models
