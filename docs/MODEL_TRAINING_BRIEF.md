@@ -83,8 +83,9 @@ Full inventory and sources are in `DATA.md`. For training specifically:
   subset (e.g. brain/microglia/immune tracks only).
 
 **Variant-labeled data (T2/T3) — the scarce, valuable part:**
-- **MPRA:** Cooper et al. 2022 Science (5,706 AD/PSP variants); the 2025
-  context-dependent AD MPRA (PMC12265656); Kircher/Vockley saturation-MPRA sets;
+- **MPRA:** Cooper et al. 2022 *Science* (DOI 10.1126/science.abi8654; 5,706
+  AD/PSP variants — abstract retrieved this session); the 2025 context-dependent
+  AD MPRA (PMC12265656); Kircher/Vockley saturation-MPRA sets;
   ENCODE/lentiMPRA compendia. These give *measured* ref/alt activity — the direct
   supervision the generalists mostly *don't* train on.
 - **raQTL** (reporter-activity QTLs, SuRE data, van Arensbergen).
@@ -169,8 +170,9 @@ A claim of "new SOTA" is only as good as the benchmark. Non-negotiables:
 - **Ablations:** show the wedge component (motif grammar / MPRA supervision) is what
   drives the gain.
 
-Public benchmark suites to use: the Kathail et al. 2025 review's evaluation
-categories; the 2025 comparative-benchmark datasets (MPRA/raQTL/eQTL, 54,859 SNPs);
+Public benchmark suites to use: the evaluation categories from Kathail, Bajwa &
+Ioannidis 2024 (arXiv 2411.11158, "Leveraging genomic deep learning models for
+the prediction of non-coding variant effects"); the 2025 comparative-benchmark datasets (MPRA/raQTL/eQTL, 54,859 SNPs);
 CAGI regulatory-variant challenges; gReLU / Borzoi eval harnesses.
 
 ---
