@@ -121,8 +121,9 @@ Method + caveats (threading, not docking): [`results/THREADING_rs6733839.md`](re
 **And what the variant DOES — a quantitative effect prediction.** Reading the
 MEF2A motif thermodynamically (Berg–von Hippel: PWM log-odds ≈ −ΔG/kT), the
 +7.56-bit gain predicts **~190× tighter MEF2A binding** for the risk T allele
-(λ=1) — a large shift in site occupancy. Four independent readouts (motif model,
-AlphaGenome ChIP, ChromBPNet, brain MPRA) agree in direction. The gold-standard
+(λ=1) — a large shift in site occupancy. Four readouts agree in direction — three predictions
+(motif model, AlphaGenome ChIP, ChromBPNet) plus one measured (brain MPRA from
+PMC12265656, cross-checked in [`results/MPRA_VALIDATION.md`](results/MPRA_VALIDATION.md)). The gold-standard
 structural confirmation — a Boltz-2 co-fold of ref vs alt MEF2A–DNA — is staged
 and ready ([`results/boltz/`](results/boltz/)); it needs a GPU host connected.
 Details + caveats: [`results/EFFECT_PREDICTION.md`](results/EFFECT_PREDICTION.md).

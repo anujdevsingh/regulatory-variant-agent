@@ -29,10 +29,12 @@ measured Kd and **not** a co-folded structure.
 | JASPAR / Berg–von Hippel | creates MEF2 site, +7.56 bits → ~190× tighter |
 | AlphaGenome (TF-ChIP) | MEF2A binding log2FC **+0.315** (quantile 0.99) |
 | ChromBPNet (accessibility) | microglia log2FC +0.026 (subtle, same direction) |
-| Brain MPRA (measured) | upregulation for risk T in brain constructs |
+| Brain MPRA (measured) | upregulation for risk T in brain constructs (2025 context-dependent AD MPRA preprint, PMC12265656; see `results/MPRA_VALIDATION.md`) |
 
 (JASPAR bits and the Berg–von Hippel affinity are the *same* calculation shown
 once — not two independent lines of evidence.)
+
+The brain-MPRA row is the one *measured* readout; it comes from the 2025 context-dependent AD MPRA preprint (PMC12265656) that we cross-checked earlier (`results/MPRA_VALIDATION.md`), not from new data generated here. The other three rows are model predictions.
 
 ## The gold-standard next step (ready to run)
 
@@ -69,3 +71,7 @@ command.
 - Affinity model: Berg & von Hippel (1987) formalism, PWM log-odds as −ΔG/kT.
 - Co-fold inputs: MEF2A protein sequence from PDB 1EGW chain A; DNA from the
   threaded ref/alt structures.
+- Brain MPRA readout: 2025 context-dependent Alzheimer's-disease MPRA preprint
+  (PMC12265656; DOI 10.1101/2025.07.11.659973), which reports upregulation for
+  the risk T allele in brain MPRA constructs. Cross-checked in
+  `results/MPRA_VALIDATION.md` (this repo).
