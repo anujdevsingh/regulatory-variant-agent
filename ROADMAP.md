@@ -3,7 +3,7 @@
 *Living document. Updated each working session. If you're an agent picking this
 up: **read this file first**, then ask the user which direction to move.*
 
-**Last updated:** 2026-07-08
+**Last updated:** 2026-07-08 (session 2)
 
 ---
 
@@ -23,9 +23,13 @@ agree on. Statistical causality and predicted molecular mechanism are decoupled.
 - **Methods contribution to the field: SMALL.** We didn't build or beat any model.
   We used the world's best models carefully. What's ours is the *analysis* and a
   clean *tool* — teaching/reproducibility value, not a new algorithm.
-- **Scientific result: MEDIUM.** The TF-binding finding is real, non-obvious, and
-  well-supported by two models — but it's *prediction*, not measurement. No
-  independent measured data has confirmed it yet, and no wet-lab validation.
+- **Scientific result: MEDIUM -> upgraded toward STRONG (2026-07-08).** The
+  TF-binding finding is now confirmed by *independent measured data*: published
+  MPRA + CRISPR (Cooper 2022 Science; context-dependent AD preprint) agree that
+  rs6733839 is functional, its effect is subtle, the mechanism is TF binding, and
+  the TFs are MEF2 + SPI1. 5 of 6 of our predictions matched measurement; the one
+  miss (immune-cell direction) exposed a real, citable model limit
+  (context-dependent enhancer grammar). See `results/MPRA_VALIDATION.md`.
 - **As a learning project / hackathon entry: STRONG.** Complete correct workflow,
   honest reporting of a subtle result instead of a forced dramatic one.
 
@@ -46,6 +50,7 @@ small/medium to STRONG — honestly, without overclaiming.**
 - [x] One-command tool with `--calibrate` and `--credible-set` modes (`score_variant.py`)
 - [x] Data provenance documented (`DATA.md`)
 - [x] GTEx bulk-brain eQTL check (see finding below)
+- [x] **MPRA validation** — cross-checked predictions vs published measured MPRA; 5/6 confirmed (`results/MPRA_VALIDATION.md`)
 
 ## Finding logged this session — GTEx eQTL (bulk tissue)
 
@@ -111,3 +116,4 @@ scorer needs. Report honestly whichever way it comes out.
 | Date | Decision |
 |---|---|
 | 2026-07-08 | Committed AlphaGenome results; wired `--credible-set` flag; added DATA.md. Ran GTEx bulk eQTL (mixed/diluted). Created this roadmap. **Next decision pending from user.** |
+| 2026-07-08 (s2) | **Chose route #1: borrow public MPRA measured data.** Found Cooper 2022 + 2025 context-dependent AD MPRA covering rs6733839; built prediction-vs-measurement scorecard (5/6 match). Scientific result upgraded toward STRONG. **Next: user chose to consider route #2 (train our own model) next.** |
