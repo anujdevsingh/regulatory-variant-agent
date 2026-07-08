@@ -1,0 +1,31 @@
+{
+  "our_predictions": {
+    "chrombpnet_microglia_log2fc": 0.026,
+    "calibration_percentile": 54,
+    "celltype_largest": [
+      "Inhibitory neurons",
+      0.229
+    ],
+    "alphagenome_MEF2A_log2fc": 0.315,
+    "alphagenome_MEF2A_q": 0.99,
+    "alphagenome_SPI1_log2fc": 0.168,
+    "alphagenome_SPI1_q": 0.97,
+    "ism_jaspar": "risk T strengthens MEF2 motif; attribution also points at adjacent PU.1/SPI1 element"
+  },
+  "measured_mpra": {
+    "paper": {
+      "title": "Context-dependent regulatory variants in Alzheimer's disease",
+      "pmcid": "PMC12265656",
+      "doi": "10.1101/2025.07.11.659973",
+      "type": "preprint (bioRxiv/medRxiv 2025)"
+    },
+    "prior_mpra": "Cooper et al. 2022 Science (10.1126/science.abi8654) + earlier HEK293T/THP-1 MPRA: SNP-centered constructs showed NO significant allele-specific effect for rs6733839; subtle upregulation noted.",
+    "measured_findings_rs6733839": {
+      "snp_centered_mpra": "no significant allele-specific effect in THP-1 macrophages, brain tissue, or HEK293T",
+      "peak_centered_mpra": "T allele drives transcriptional REPRESSION in THP-1 macrophages and HMC3 microglia-like cells",
+      "brain_mpra": "upregulation detected in brain MPRA constructs (T allele)",
+      "ml_models_in_paper": "predicted INCREASED chromatin accessibility for T allele in both macrophages and brain",
+      "mechanism": "immune models -> T strengthens SPI1 motif -> repression in immune cells; brain models -> MEF2 gain-of-function -> upregulation in brain; net effect is context-dependent (repressor combinable with adjacent motifs)"
+    }
+  }
+}
