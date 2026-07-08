@@ -106,6 +106,18 @@ and caveats: [`results/VISUALIZATION_3D.md`](results/VISUALIZATION_3D.md).
 
 ![TF–DNA structures](results/fig8_tf_dna_structures.png)
 
+**And the variant itself, in 3D.** We took the honest next step: instead of the
+consensus site, we threaded the **real BIN1 enhancer sequence** (reference C vs
+Alzheimer's-risk T) onto the MEF2A crystal DNA. A JASPAR scan of the actual
+genomic sequence shows the risk **T creates a strong MEF2 site (+7.56 bits)**,
+with the variant base sitting inside the MEF2 footprint (SPI1 barely changes,
++0.18). Interactive ref/alt structures:
+[`results/structures/MEF2A_rs6733839_REF_C.pdb`](results/structures/MEF2A_rs6733839_REF_C.pdb),
+[`results/structures/MEF2A_rs6733839_ALT_T.pdb`](results/structures/MEF2A_rs6733839_ALT_T.pdb).
+Method + caveats (threading, not docking): [`results/THREADING_rs6733839.md`](results/THREADING_rs6733839.md).
+
+![rs6733839 threaded onto MEF2A](results/fig9_rs6733839_threaded.png)
+
 ## Pipeline
 
 ```

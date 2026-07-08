@@ -53,6 +53,7 @@ small/medium to STRONG — honestly, without overclaiming.**
 - [x] GTEx bulk-brain eQTL check (see finding below)
 - [x] **MPRA validation** — cross-checked predictions vs published measured MPRA; 5/6 confirmed (`results/MPRA_VALIDATION.md`)
 - [x] **3D visualization** — rendered PU.1/SPI1 (1PUE) + MEF2A (1EGW) TF–DNA co-crystals as interactive artifacts (`results/VISUALIZATION_3D.md`)
+- [x] **Variant threading** — put the real rs6733839 ref/alt sequence onto MEF2A-DNA (1EGW); risk T creates a +7.56-bit MEF2 site (`results/THREADING_rs6733839.md`)
 
 ## Finding logged this session — GTEx eQTL (bulk tissue)
 
@@ -119,4 +120,5 @@ scorer needs. Report honestly whichever way it comes out.
 |---|---|
 | 2026-07-08 | Committed AlphaGenome results; wired `--credible-set` flag; added DATA.md. Ran GTEx bulk eQTL (mixed/diluted). Created this roadmap. **Next decision pending from user.** |
 | 2026-07-08 (s2) | **Chose route #1: borrow public MPRA measured data.** Found a 2025 context-dependent AD MPRA preprint covering rs6733839 (Cooper 2022 Science cited as the landmark large-scale AD MPRA for context, full text not retrieved); built prediction-vs-measurement scorecard (5/6 match).
-| 2026-07-08 (s2) | Built **3D visualization**: fetched real PU.1/SPI1 (PDB 1PUE) and MEF2A (PDB 1EGW) TF–DNA co-crystals, cleaned to interactive .pdb artifacts + side-by-side render. Makes the two-TF / two-context mechanism tangible. | Scientific result upgraded toward STRONG. **Next: user chose to consider route #2 (train our own model) next.** |
+| 2026-07-08 (s2) | Built **3D visualization**: fetched real PU.1/SPI1 (PDB 1PUE) and MEF2A (PDB 1EGW) TF–DNA co-crystals, cleaned to interactive .pdb artifacts + side-by-side render. Makes the two-TF / two-context mechanism tangible. |
+| 2026-07-08 (s2) | **Threaded the real variant**: Ensembl seq + JASPAR scan (risk T creates a +7.56-bit MEF2 site) → threaded BIN1 ref/alt sequence onto MEF2A-DNA crystal (1EGW). Backbone/protein unchanged; validated geometry. 3D now shows the variant, not the consensus. Labeled threading, not docking. | Scientific result upgraded toward STRONG. **Next: user chose to consider route #2 (train our own model) next.** |
