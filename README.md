@@ -94,6 +94,18 @@ models. Full scorecard + honest reading: [`results/MPRA_VALIDATION.md`](results/
 
 ![prediction vs measured MPRA](results/fig7_mpra_validation.png)
 
+### See it in 3D — the transcription factors, bound to DNA
+
+To make the mechanism tangible, we rendered the two TFs our models + MPRA
+implicate as **real experimental co-crystal structures** clamped onto DNA:
+**PU.1/SPI1** (PDB 1PUE, immune/repression) and the **MEF2A** dimer (PDB 1EGW,
+brain/activation). Both are interactive 3D artifacts (rotate/zoom):
+[`results/structures/PU1_SPI1_DNA.pdb`](results/structures/PU1_SPI1_DNA.pdb),
+[`results/structures/MEF2A_DNA.pdb`](results/structures/MEF2A_DNA.pdb). Details
+and caveats: [`results/VISUALIZATION_3D.md`](results/VISUALIZATION_3D.md).
+
+![TF–DNA structures](results/fig8_tf_dna_structures.png)
+
 ## Pipeline
 
 ```
