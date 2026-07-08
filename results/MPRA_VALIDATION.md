@@ -10,9 +10,10 @@ purely computationally, to the Pollard-lab-style "model + reporter assay" loop.*
 
 - **Cooper et al. 2022, *Science*** (DOI 10.1126/science.abi8654) — the landmark
   dementia MPRA: screened 5,706 AD/PSP GWAS variants for allele-specific
-  regulatory activity. Establishes that rs6733839 was tested and showed **no
-  significant allele-specific effect** in SNP-centered constructs (subtle
-  upregulation noted).
+  regulatory activity, identifying 320 functional regulatory variants across 27
+  loci. We cite it as the established large-scale AD-variant MPRA; **we did not
+  retrieve its full text, so we do not attribute any rs6733839-specific result to
+  it here** (its abstract does not mention rs6733839 or BIN1).
 - **"Context-dependent regulatory variants in Alzheimer's disease"** (preprint,
   PMC12265656 / DOI 10.1101/2025.07.11.659973, 2025) — re-examined rs6733839 with
   SNP-centered AND longer peak-centered MPRA constructs across THP-1 macrophages,
@@ -22,6 +23,14 @@ purely computationally, to the Pollard-lab-style "model + reporter assay" loop.*
 
 These are independent measurements — different groups, different assay — from the
 models we used. That independence is what makes the comparison meaningful.
+
+**Provenance note (attribution correction):** the specific prior-MPRA finding
+that rs6733839 showed *no significant allele-specific effect with subtle
+upregulation* in SNP-centered constructs is reported by the 2025 context-dependent
+preprint as a summary of *earlier* MPRA work in HEK293T/THP-1 cells; that preprint
+does not name which study. We therefore attribute this prior-null result to
+"previous MPRA assays" as reported by the 2025 preprint — **not** specifically to
+Cooper 2022.
 
 ## The scorecard: 5 of 6 predictions confirmed
 

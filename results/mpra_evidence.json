@@ -19,13 +19,14 @@
       "doi": "10.1101/2025.07.11.659973",
       "type": "preprint (bioRxiv/medRxiv 2025)"
     },
-    "prior_mpra": "Cooper et al. 2022 Science (10.1126/science.abi8654) + earlier HEK293T/THP-1 MPRA: SNP-centered constructs showed NO significant allele-specific effect for rs6733839; subtle upregulation noted.",
+    "prior_mpra": "As reported by the 2025 context-dependent preprint (PMC12265656): PREVIOUS MPRA assays in HEK293T and THP-1 cells showed NO significant allele-specific effect for rs6733839 (subtle upregulation noted). The preprint does not name which prior study; NOT attributed to Cooper 2022.",
     "measured_findings_rs6733839": {
       "snp_centered_mpra": "no significant allele-specific effect in THP-1 macrophages, brain tissue, or HEK293T",
       "peak_centered_mpra": "T allele drives transcriptional REPRESSION in THP-1 macrophages and HMC3 microglia-like cells",
       "brain_mpra": "upregulation detected in brain MPRA constructs (T allele)",
       "ml_models_in_paper": "predicted INCREASED chromatin accessibility for T allele in both macrophages and brain",
       "mechanism": "immune models -> T strengthens SPI1 motif -> repression in immune cells; brain models -> MEF2 gain-of-function -> upregulation in brain; net effect is context-dependent (repressor combinable with adjacent motifs)"
-    }
+    },
+    "cooper_2022_role": "Cited as the landmark large-scale AD/PSP MPRA (5,706 variants, 320 functional regulatory variants). Full text NOT retrieved; no rs6733839-specific result attributed to it (abstract does not mention rs6733839/BIN1)."
   }
 }

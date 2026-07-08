@@ -25,9 +25,10 @@ agree on. Statistical causality and predicted molecular mechanism are decoupled.
   clean *tool* — teaching/reproducibility value, not a new algorithm.
 - **Scientific result: MEDIUM -> upgraded toward STRONG (2026-07-08).** The
   TF-binding finding is now confirmed by *independent measured data*: published
-  MPRA + CRISPR (Cooper 2022 Science; context-dependent AD preprint) agree that
-  rs6733839 is functional, its effect is subtle, the mechanism is TF binding, and
-  the TFs are MEF2 + SPI1. 5 of 6 of our predictions matched measurement; the one
+  MPRA + CRISPR agree that rs6733839 is functional, its effect is subtle, the
+  mechanism is TF binding, and the TFs are MEF2 + SPI1. (rs6733839-specific
+  measurements from the 2025 context-dependent AD preprint; Cooper 2022 Science
+  cited as the landmark large-scale AD MPRA, full text not retrieved.) 5 of 6 of our predictions matched measurement; the one
   miss (immune-cell direction) exposed a real, citable model limit
   (context-dependent enhancer grammar). See `results/MPRA_VALIDATION.md`.
 - **As a learning project / hackathon entry: STRONG.** Complete correct workflow,

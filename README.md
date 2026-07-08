@@ -82,8 +82,9 @@ The ChromBPNet result left a puzzle: rs6733839 is the fine-mapped **causal** var
 
 We went one step past prediction: we found **published MPRA data** (massively
 parallel reporter assays — real measured transcriptional activity) that tested
-rs6733839, and checked our predictions against it (Cooper et al. 2022 *Science*;
-a 2025 context-dependent AD MPRA preprint). **5 of 6 of our predictions are
+rs6733839, and checked our predictions against it. The rs6733839-specific measurements come from a 2025 context-dependent AD MPRA preprint (which also reports that
+*earlier* MPRA work saw no significant allele effect); Cooper et al. 2022 *Science* is cited as
+the landmark large-scale AD-variant MPRA for context. **5 of 6 of our predictions are
 confirmed by independent measurement** — the variant is functional, its effect is
 subtle (SNP-centered MPRA sees no significant effect, matching our "54th
 percentile"), the mechanism is TF binding, and the TFs are MEF2 + SPI1. The one
