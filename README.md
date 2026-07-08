@@ -50,6 +50,21 @@ python score_variant.py --rsid rs6733839 \
 
 ![variant prediction + ISM](results/fig1_variant_prediction.png)
 
+### Multimodal cross-check with AlphaGenome — the puzzle resolves
+
+The ChromBPNet result left a puzzle: rs6733839 is the fine-mapped **causal** variant (posterior 0.998), yet its predicted *microglial accessibility* effect is tiny and points at an adjacent element, not the variant base. We scored the same variant through **AlphaGenome** (Avsec et al. 2026), a multimodal sequence model, over a 1 Mb window — **12,848 track-level effect scores** across chromatin accessibility (ATAC), DNase, transcription-factor binding (ChIP), and gene expression (RNA-seq).
+
+| Modality | AlphaGenome peak \|effect\| | Reading |
+|---|---|---|
+| Chromatin accessibility (ATAC) | 0.237 log2FC | modest — **agrees with ChromBPNet** |
+| DNase sensitivity | 0.263 log2FC | modest, same story |
+| **TF binding (ChIP)** | **0.315 log2FC (MEF2A, quantile 0.99)** | **largest effect — the variant changes TF occupancy** |
+| Gene expression (BIN1) | 0.041 log2FC, **quantile 1.00** | small magnitude but top-of-distribution *for BIN1* |
+
+**The mechanism the accessibility model couldn't see is transcription-factor binding.** And the two independent models converge: ChromBPNet's ISM + JASPAR scan flagged that risk-allele T *strengthens a MEF2 motif*; AlphaGenome independently predicts risk-T **increases MEF2A binding** (+0.315, q=0.99) and **SPI1/PU.1 binding** (+0.168, q=0.97) — the same two transcription factors ChromBPNet's attribution pointed at. Two separately-trained state-of-the-art models agreeing on the TFs is far stronger evidence than either alone. Full analysis + caveats (cell-type mismatch on the peak tracks, black-box scores): [`results/AG_MULTIMODAL_RESULTS.md`](results/AG_MULTIMODAL_RESULTS.md).
+
+![AlphaGenome multimodal cross-check](results/fig6_alphagenome_multimodal.png)
+
 ## Pipeline
 
 ```
@@ -72,6 +87,7 @@ rsID / coords
 - [x] One-command reusable tool → [`score_variant.py`](score_variant.py)
 - [x] Calibration against a null variant background — **rs6733839 is at the 54th percentile of common brain-peak SNPs (z = −0.29)**, i.e. a typical effect (`results/CALIBRATION.md`)
 - [x] Credible-set scan — scored the published fine-mapping credible set (Schwartzentruber 2021, 25 variants); rs6733839 is the causal variant (PP=0.998) but 11th of 25 by predicted effect (`results/ALLELIC_SERIES.md`)
+- [x] Multimodal cross-check — scored rs6733839 through **AlphaGenome** (12,848 tracks, 4 modalities); largest effect is **TF binding (MEF2A, q=0.99)**, independently corroborating the ChromBPNet MEF2/SPI1 motif hit (`results/AG_MULTIMODAL_RESULTS.md`)
 - [ ] Demo video + write-up
 
 ## Data & models
@@ -79,6 +95,11 @@ rsID / coords
 - **Model:** brain-cell-type **ChromBPNet** models (base-resolution ATAC CNN, Tn5-bias-factorized), trained on **Corces scATAC pseudobulk** by the PsychENCODE/Weng group — Zenodo **10.5281/zenodo.10605867** (`Zenodo/data/chrombpnet/*_chrombpnet_nobias.h5`): Microglia, Astrocytes, Excitatory/Inhibitory neurons, Oligodendrocytes, OPCs. Underlying method: [ChromBPNet](https://github.com/kundajelab/chrombpnet).
 - **Variant/coords:** Ensembl REST (GRCh38); **sequence:** UCSC hg38 API.
 - **Motifs:** JASPAR CORE vertebrates (MEF2A `MA0052.4`, MEF2C `MA0497.1`).
+- **Multimodal model:** **AlphaGenome** (Avsec et al. 2026, Nature) via the Google DeepMind API — 1 Mb window, ATAC/DNase/TF-ChIP/RNA-seq effect scores. Requires an AlphaGenome API key (env `ALPHAGENOME`).
+- **Fine-mapping credible set:** Schwartzentruber et al. 2021, *Nat Genet* (DOI 10.1038/s41588-020-00776-w), Supplementary Table 8.
+- **Calibration null:** common SNPs (MAF≥0.05) from ENCODE cortex ATAC IDR peaks (ENCFF221FSW).
+
+See [`DATA.md`](DATA.md) for every dataset used — source, size, license, and whether it is committed in-repo or fetched on demand.
 
 See [`SCOPING.md`](SCOPING.md) for the full method lineage, verified accessions, and caveats; [`results/RESULTS.md`](results/RESULTS.md) for the analysis.
 
