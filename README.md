@@ -8,6 +8,8 @@ Given a noncoding variant, this tool predicts its effect on chromatin accessibil
 
 > **What this is:** a reusable, sequence-based variant-interpretation instrument. The Alzheimer's variant below is a worked example of it running on a real disease locus — with an honest, nuanced result, not a forced one.
 
+> **Status & next steps:** see [`ROADMAP.md`](ROADMAP.md) — a living doc of what's done, an honest self-assessment, and the chosen next direction (updated each session).
+
 ## Quick start
 
 ```bash
