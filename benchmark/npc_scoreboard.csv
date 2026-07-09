@@ -1,0 +1,8 @@
+model,acc,ci_lo,ci_hi,auroc,majority_class
+PWM Δ-score (floor),0.4645,0.429,0.499,,0.547
+Logistic-motifs (floor),0.4937,0.458,0.529,,0.547
+Logistic-motifs (in-dist),0.4962,0.459,0.529,0.506,0.547
+GBT-motifs (in-dist),0.5228,0.489,0.557,0.527,0.547
+AlphaGenome (incumbent),0.5089,0.475,0.546,0.48,0.547
+Borzoi (incumbent),0.236,0.208,0.266,0.473,0.547
+Wedge-GBT (motif+context),0.5038,0.472,0.537,0.516,0.547
