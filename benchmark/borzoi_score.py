@@ -43,14 +43,25 @@ for ctx,rx in CTX_RX.items():
     print("ctx", ctx, "n_tracks", len(idx), flush=True)
 
 # --- sequence fetch: UCSC DAS or twobit via API; use UCSC REST ---
+CHROM_LEN={"1":248956422,"2":242193529,"3":198295559,"4":190214555,"5":181538259,
+"6":170805979,"7":159345973,"8":145138636,"9":138394717,"10":133797422,"11":135086622,
+"12":133275309,"13":114364328,"14":107043718,"15":101991189,"16":90338345,"17":83257441,
+"18":80373285,"19":58617616,"20":64444167,"21":46709983,"22":50818468,"X":156040895,"Y":57227415}
+
 def get_seq(chrom, center, length=SEQLEN):
     half=length//2
-    start=center-half; end=center+half  # 0-based fetch, center is 1-based pos
-    url=f"https://api.genome.ucsc.edu/getData/sequence?genome=hg38;chrom=chr{chrom};start={start};end={end}"
+    start=center-half-1; end=center+half-1  # 0-based, center is 1-based pos -> center base at index half
+    clen=CHROM_LEN.get(str(chrom), 250000000)
+    lpad = max(0, -start); rpad = max(0, end-clen)
+    fstart=max(0,start); fend=min(clen,end)
+    url=f"https://api.genome.ucsc.edu/getData/sequence?genome=hg38;chrom=chr{chrom};start={fstart};end={fend}"
     for _ in range(5):
         try:
             j=json.loads(urllib.request.urlopen(url, timeout=90).read())
-            return j["dna"].upper()
+            seq=j["dna"].upper()
+            seq="N"*lpad + seq + "N"*rpad  # pad to full length; center stays at index half
+            if len(seq)!=length: seq=seq[:length].ljust(length,"N")
+            return seq
         except Exception as e:
             print("seq retry", e); time.sleep(3)
     raise RuntimeError(f"seq {chrom}:{center}")
