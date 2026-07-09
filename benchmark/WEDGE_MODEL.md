@@ -59,7 +59,7 @@ significance — **OR a well-characterized negative showing the wedge didn't
 hold.** We have the latter, and we can say precisely why:
 - The signal that works (Borzoi accessibility deltas) is already an incumbent.
 - The signal we hoped would add value (motif grammar) does not, measurably.
-- The on-wedge data is too small (n=56 test, 62 train) to resolve a real edge
+- The on-wedge data is too small (n=56 test, 62 train / 58 with features) to resolve a real edge
   even if one exists — a power limitation, stated up front and confirmed.
 
 An overclaimed win here would have required cherry-picking microglia (n=7, where
@@ -70,7 +70,7 @@ our GBT shows 0.571 on 7 points — meaningless) or dropping the CIs. We did nei
   ceiling on any claim. New microglia/brain MPRA or allele-specific ATAC would
   matter more than any architecture change.
 - **Fine-tune Borzoi itself** on the on-wedge direction labels (not features on
-  top of it) — but 62 examples risks overfitting; needs the data above first.
+  top of it) — but ~60 examples risks overfitting; needs the data above first.
 - **Flashzoi / multi-replicate Borzoi ensembling** could tighten the incumbent
   estimate and is a cheaper next GPU step.
 
