@@ -19,14 +19,15 @@
     "microglia (HMC3)",
     "brain (mouse tissue MPRA)"
   ],
-  "n_total": 2157,
-  "n_test": 543,
-  "n_train": 1614,
-  "pct_test": 25.17,
-  "n_test_onwedge": 71,
-  "n_train_onwedge": 63,
+  "n_total": 2151,
+  "n_test": 538,
+  "n_train": 1613,
+  "pct_test": 25.01,
+  "n_test_onwedge": 69,
+  "n_train_onwedge": 62,
   "rs6733839_fold": "test",
   "source_data": "benchmark/harmonized_variants.csv",
   "direction_convention": "direction = sign(activity_alt - activity_ref) in the variant's cell context",
-  "leakage_guard": "no variant appears in both folds; whole chromosomes are held out so no cis-locus spans the split"
+  "leakage_guard": "no variant appears in both folds; whole chromosomes are held out so no cis-locus spans the split",
+  "dedup_note": "harmonized table deduplicated to unique (variant_id,context): duplicate AD-MPRA enhancer constructs for the same variant\u00d7context aggregated by mean effect_size (6 variant\u00d7context pairs, 2157->2151 rows)"
 }

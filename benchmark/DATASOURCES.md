@@ -37,7 +37,7 @@ directional test. Reported per-context; the wedge claim is evaluated on-wedge.
   microglia — matches the validated MPRA failure mode (results/MPRA_VALIDATION.md).
 
 ## Files
-- `benchmark/harmonized_variants.csv` — 2,157 variants, one row per variant×context.
+- `benchmark/harmonized_variants.csv` — 2,151 variants (unique variant×context after dedup), one row per variant×context.
 - `benchmark/harmonized_context_summary.csv` — per-source/per-context counts,
   direction balance (46–58% alt-up → naive majority baseline ≈ 50%), chromosomes.
 

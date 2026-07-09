@@ -1,9 +1,8 @@
 variant_id,rsid,chrom,pos_hg38,ref,alt,source,context,wedge,direction,sig,fold
 1:101453823:C>G,rs573338217,1,101453823,C,G,AD_MPRA_2025,HEK293T (control),False,1,True,train
 10:117831290:G>T,rs11198134,10,117831290,G,T,AD_MPRA_2025,HEK293T (control),False,1,True,train
+11:47389337:G>C,rs10838702,11,47389337,G,C,AD_MPRA_2025,HEK293T (control),False,-1,True,test
 11:47389337:G>T,rs10838702,11,47389337,G,T,AD_MPRA_2025,HEK293T (control),False,-1,True,test
-11:47389337:G>C,rs10838702,11,47389337,G,C,AD_MPRA_2025,HEK293T (control),False,-1,True,test
-11:47389337:G>C,rs10838702,11,47389337,G,C,AD_MPRA_2025,HEK293T (control),False,-1,True,test
 11:47395632:A>C,rs10769263,11,47395632,A,C,AD_MPRA_2025,HEK293T (control),False,1,True,test
 11:47465333:C>T,rs1317149,11,47465333,C,T,AD_MPRA_2025,HEK293T (control),False,1,True,test
 11:60101646:C>T,rs580064,11,60101646,C,T,AD_MPRA_2025,HEK293T (control),False,1,True,test
@@ -18,8 +17,8 @@ variant_id,rsid,chrom,pos_hg38,ref,alt,source,context,wedge,direction,sig,fold
 18:58522227:T>C,rs76726049,18,58522227,T,C,AD_MPRA_2025,HEK293T (control),False,-1,True,train
 19:44856449:G>A,rs12462573,19,44856449,G,A,AD_MPRA_2025,HEK293T (control),False,1,True,test
 19:44945942:C>A,rs2288912,19,44945942,C,A,AD_MPRA_2025,HEK293T (control),False,1,True,test
-19:44945942:C>T,rs2288912,19,44945942,C,T,AD_MPRA_2025,HEK293T (control),False,1,True,test
 19:44945942:C>G,rs2288912,19,44945942,C,G,AD_MPRA_2025,HEK293T (control),False,1,True,test
+19:44945942:C>T,rs2288912,19,44945942,C,T,AD_MPRA_2025,HEK293T (control),False,1,True,test
 2:104658952:T>C,rs72943447,2,104658952,T,C,AD_MPRA_2025,HEK293T (control),False,-1,True,test
 2:127128582:C>T,rs13025717,2,127128582,C,T,AD_MPRA_2025,HEK293T (control),False,-1,True,test
 3:105584898:A>G,rs114269606,3,105584898,A,G,AD_MPRA_2025,HEK293T (control),False,-1,True,train
@@ -32,9 +31,7 @@ variant_id,rsid,chrom,pos_hg38,ref,alt,source,context,wedge,direction,sig,fold
 6:32609938:T>G,rs9271162,6,32609938,T,G,AD_MPRA_2025,HEK293T (control),False,1,True,test
 6:47477281:C>T,rs1004173,6,47477281,C,T,AD_MPRA_2025,HEK293T (control),False,1,True,test
 6:108002990:T>G,rs113440795,6,108002990,T,G,AD_MPRA_2025,HEK293T (control),False,1,True,test
-6:108002990:T>G,rs113440795,6,108002990,T,G,AD_MPRA_2025,HEK293T (control),False,1,True,test
 6:108003070:A>G,rs115607757,6,108003070,A,G,AD_MPRA_2025,HEK293T (control),False,1,True,test
-6:108003170:C>G,rs62427420,6,108003170,C,G,AD_MPRA_2025,HEK293T (control),False,-1,True,test
 6:108003170:C>G,rs62427420,6,108003170,C,G,AD_MPRA_2025,HEK293T (control),False,-1,True,test
 6:119110489:G>T,rs79331926,6,119110489,G,T,AD_MPRA_2025,HEK293T (control),False,-1,True,test
 7:143412115:T>G,rs75045569,7,143412115,T,G,AD_MPRA_2025,HEK293T (control),False,1,True,train
@@ -94,10 +91,9 @@ variant_id,rsid,chrom,pos_hg38,ref,alt,source,context,wedge,direction,sig,fold
 11:60333134:G>A,rs4477457,11,60333134,G,A,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
 11:60333146:A>G,rs10792265,11,60333146,A,G,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
 12:45050224:C>G,rs75895181,12,45050224,C,G,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,train
-12:45050224:C>G,rs75895181,12,45050224,C,G,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,train
 12:45050225:A>G,rs75009307,12,45050225,A,G,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,train
-12:116134136:A>G,rs75914421,12,116134136,A,G,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,train
 12:116134136:A>C,rs75914421,12,116134136,A,C,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,train
+12:116134136:A>G,rs75914421,12,116134136,A,G,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,train
 14:92466231:C>T,rs10130373,14,92466231,C,T,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,train
 16:89365227:G>C,rs114790291,16,89365227,G,C,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,train
 17:3386082:C>T,rs227980,17,3386082,C,T,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,train
@@ -114,11 +110,11 @@ variant_id,rsid,chrom,pos_hg38,ref,alt,source,context,wedge,direction,sig,fold
 19:1998979:A>G,rs116278719,19,1998979,A,G,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 19:8393415:T>A,rs111469245,19,8393415,T,A,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 19:44800771:T>A,rs139246905,19,44800771,T,A,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
+19:44945942:C>A,rs2288912,19,44945942,C,A,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
 19:44945942:C>G,rs2288912,19,44945942,C,G,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
 19:44945942:C>T,rs2288912,19,44945942,C,T,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
-19:44945942:C>A,rs2288912,19,44945942,C,A,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
-19:45156878:A>T,rs10416371,19,45156878,A,T,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 19:45156878:A>C,rs10416371,19,45156878,A,C,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
+19:45156878:A>T,rs10416371,19,45156878,A,T,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 2:113083166:C>T,rs115361688,2,113083166,C,T,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 2:113083214:A>G,rs10199363,2,113083214,A,G,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
 2:113083542:T>C,rs80057954,2,113083542,T,C,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
@@ -127,8 +123,8 @@ variant_id,rsid,chrom,pos_hg38,ref,alt,source,context,wedge,direction,sig,fold
 2:127128657:C>T,rs13025765,2,127128657,C,T,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
 2:127135234:C>T,rs6733839,2,127135234,C,T,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 2:127135449:C>A,rs72838288,2,127135449,C,A,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
-2:127135449:C>T,rs72838288,2,127135449,C,T,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 2:127135449:C>G,rs72838288,2,127135449,C,G,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
+2:127135449:C>T,rs72838288,2,127135449,C,T,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 3:58308758:T>C,rs190245398,3,58308758,T,C,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,train
 4:11714742:C>G,rs3849027,4,11714742,C,G,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,train
 5:107428610:C>A,rs58862540,5,107428610,C,A,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,train
@@ -139,7 +135,6 @@ variant_id,rsid,chrom,pos_hg38,ref,alt,source,context,wedge,direction,sig,fold
 6:32602548:G>A,rs9270836,6,32602548,G,A,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 6:108002826:A>T,rs147038704,6,108002826,A,T,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 6:108003070:A>G,rs115607757,6,108003070,A,G,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
-6:108003170:C>G,rs62427420,6,108003170,C,G,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 6:108003170:C>G,rs62427420,6,108003170,C,G,AD_MPRA_2025,immune (THP-1 macrophage),True,-1,True,test
 6:108003222:G>A,rs189835276,6,108003222,G,A,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
 6:108003222:G>C,rs189835276,6,108003222,G,C,AD_MPRA_2025,immune (THP-1 macrophage),True,1,True,test
@@ -171,7 +166,6 @@ variant_id,rsid,chrom,pos_hg38,ref,alt,source,context,wedge,direction,sig,fold
 6:32604302:C>T,rs9270906,6,32604302,C,T,AD_MPRA_2025,microglia (HMC3),True,1,True,test
 6:108002498:G>A,rs73762103,6,108002498,G,A,AD_MPRA_2025,microglia (HMC3),True,-1,True,test
 6:108003070:A>G,rs115607757,6,108003070,A,G,AD_MPRA_2025,microglia (HMC3),True,1,True,test
-6:108003170:C>G,rs62427420,6,108003170,C,G,AD_MPRA_2025,microglia (HMC3),True,-1,True,test
 6:108003170:C>G,rs62427420,6,108003170,C,G,AD_MPRA_2025,microglia (HMC3),True,-1,True,test
 9:137202004:T>C,rs191755494,9,137202004,T,C,AD_MPRA_2025,microglia (HMC3),True,-1,True,train
 1:1967338:G>C,rs34506333,1,1967338,G,C,SuRE_raQTL,HepG2 (hepatocellular),False,-1,True,train

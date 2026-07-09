@@ -1,7 +1,7 @@
 source,assay,context,n,n_pos,n_neg,n_sig,n_unique_chrom,pct_alt_up
-AD_MPRA_2025,MPRA,HEK293T (control),41,24,17,41,16,58.5
+AD_MPRA_2025,MPRA,HEK293T (control),38,23,15,38,16,60.5
 AD_MPRA_2025,MPRA,brain (mouse tissue MPRA),47,23,24,47,13,48.9
-AD_MPRA_2025,MPRA,immune (THP-1 macrophage),61,28,33,61,14,45.9
-AD_MPRA_2025,MPRA,microglia (HMC3),26,12,14,26,13,46.2
+AD_MPRA_2025,MPRA,immune (THP-1 macrophage),59,27,32,59,14,45.8
+AD_MPRA_2025,MPRA,microglia (HMC3),25,12,13,25,13,48.0
 SuRE_raQTL,SuRE,HepG2 (hepatocellular),994,514,480,994,23,51.7
 SuRE_raQTL,SuRE,K562 (erythroleukemia),988,510,478,988,23,51.6
