@@ -1,7 +1,8 @@
 # NPC MPRA benchmark expansion — result
 
 ## What we tested
-We expanded the on-wedge (brain-lineage) benchmark from 56 → 844 held-out variants by
+We expanded the on-wedge (brain-lineage) held-out set to 857 variants (of which 788 are
+the new NPC context; the other 69 are the pre-existing immune/microglia/brain test rows) by
 adding 788 test variants from a large independent psychiatric cross-disorder MPRA in
 hiPSC-derived neural progenitor cells (Lee et al. 2025, Cell; GSE244011). Direction was
 computed directly from deposited DNA/RNA barcode counts (measured, not predicted),
@@ -37,7 +38,10 @@ predictable** — not by:
 - Borzoi (524 kb) — AUROC 0.47, at chance where it predicts a nonzero change,
 - our grammar-aware wedge model — AUROC 0.52.
 
-Every model's CI includes 0.5; none reaches the 0.547 majority-class rate. This is not a
+Every model's *honest* directional metric is at chance — AUROC 0.47–0.53 for all, and
+every accuracy CI includes 0.5 except Borzoi's raw score, whose 0.236 [.208,.266] is a
+zero-inflation artifact (its honest nonzero-subset accuracy is 0.486 [.433,.538], which
+does span 0.5). None reaches the 0.547 majority-class rate. This is not a
 weak signal we failed to capture — it is a well-powered null (n=788), consistent across
 seven independent modeling approaches including in-distribution training.
 
