@@ -130,3 +130,39 @@ scorer needs. Report honestly whichever way it comes out.
 
 ## FINAL VERDICT (Route #2 complete — characterized NEGATIVE)
 Trained the directional wedge model on the L40S GPU (Borzoi scored + embedded, GBT on motif+Borzoi+grammar features, non-test folds, seed=0). **On-wedge pooled (n=56): wedge model 0.554 [.429,.679] — below Borzoi 0.625 [.500,.750], not significant, does not beat the incumbent.** Key findings: (1) Borzoi, not AlphaGenome, is the real on-wedge incumbent (0.625 vs 0.536) and calls rs6733839 CORRECTLY where AlphaGenome fails; (2) motif/grammar features add nothing over Borzoi's own-context accessibility delta (permutation importance: bz_own dominates ~2.5x); (3) 62 on-wedge train variants (58 with features) is the binding limit (on-wedge-only regime = 0.464, chance). This is a legitimate close per the mandate: a well-characterized negative. Highest-value next lever = more on-wedge measured data (n=56 is the ceiling on any claim). Commits: Borzoi 9cc7cfad, wedge 8d0487118. See benchmark/WEDGE_MODEL.md. Borzoi/Flashzoi row = pending GPU (`benchmark/borzoi_run.py` committed, NOT faked — no GPU connected). Commits: floor 05ff49d5, AlphaGenome 25e3ae6f, scoreboard 1640a6fa, corrections 729f3b28→dedup 56a9092b. | **Next fork: design + train the directional wedge model (needs a GPU host connected). Definition of a win: on-wedge pooled accuracy significantly above 0.5, CI clearing both the incumbent and the floor.** |
+
+
+---
+
+## SESSION UPDATE (2026-07-09 cont.) — NPC benchmark expansion: well-powered null
+
+**Did the highest-value lever (more on-wedge data) break the ceiling? Answer: the ceiling
+was a real signal ceiling, not a data ceiling.**
+
+Added 788 held-out + 2,877 train variants from an independent brain-lineage MPRA
+(Lee 2025 Cell, GSE244011, hiPSC-NPC), measured direction from raw DNA/RNA counts,
+lifted to hg38, added to frozen chr split. On-wedge training: 62 → 2,939 (47×).
+
+**Result (n=788 held-out NPC): NO model beats chance.**
+- Floors (PWM/logistic): 0.46–0.49
+- Motif models IN-DISTRIBUTION (trained on 2,877 NPC-train): AUROC 0.51–0.53
+- AlphaGenome: 0.509, AUROC 0.48
+- Borzoi: AUROC 0.47 (0.236 raw acc = zero-inflation artifact, 51% zero-delta)
+- Wedge-GBT: 0.504, AUROC 0.52
+- All CIs span 0.5; none reaches majority-class 0.547.
+
+**Interpretation:** On large independent brain-lineage MPRA, variant direction is not
+predictable by any approach. The rs6733839 wedge (Borzoi right / AlphaGenome backwards)
+is likely context-specific (immune/microglia) AND effect-size-specific (large-effect
+variant) — NOT a general brain-lineage property. This is a legitimate well-characterized
+negative at scale (mandate-compliant close).
+
+**Pivotal missing piece:** exact-context microglia measured data (Kosoy 2022 caQTL,
+Synapse syn26207321 / NIAGADS NG00105) is access-gated (token + likely DUA). That is the
+one dataset that could test the wedge where rs6733839's failure actually lives.
+
+**Data sources status:** #2 psychiatric NPC MPRA = DONE (this update). #1 peripheral-immune
+= dropped (CNN predictions, not measured MPRA). #3 Kosoy microglia caQTL = access-gated.
+#4 Chen 3'-UTR microglia MPRA = not yet fetched (post-transcriptional layer, lower priority).
+
+Commits: 9e6ad922 (data), 08d04175 (floors+AG), d1eb2a62 (Borzoi+result+figure).
