@@ -166,3 +166,31 @@ one dataset that could test the wedge where rs6733839's failure actually lives.
 #4 Chen 3'-UTR microglia MPRA = not yet fetched (post-transcriptional layer, lower priority).
 
 Commits: 9e6ad922 (data), 08d04175 (floors+AG), d1eb2a62 (Borzoi+result+figure).
+
+
+---
+
+## SESSION UPDATE (2026-07-09 cont.) — Chen 3'-UTR MPRA (#4) added; microglia measured, still at chance
+
+Added source #4 (Chen/Liu Genome Biology 2026, GSE253841): 3'-UTR MPRA in SH-SY5Y +
+microglia. Direction estimated from variant-summed DNA/RNA counts (p<0.01 confident set;
+CANNOT reproduce paper's barcode-GLMM significance — deposited counts are variant-summed).
+561 variants added (349 microglia-3'UTR + 212 SH-SY5Y), 168 test / 393 train. Benchmark v4:
+6,377 variants, 9 contexts.
+
+**Result — all local models at chance, including REAL microglia:**
+- microglia-3'UTR (n=127): PWM 0.488, Logistic 0.543, AlphaGenome 0.480 (AUROC 0.488); majority 0.551
+- SH-SY5Y-3'UTR (n=73): PWM 0.397, Logistic 0.521, AlphaGenome 0.452 (AUROC 0.428); majority 0.616
+- Borzoi row GPU-GATED (instance deleted after NPC run; unlikely to change conclusion)
+
+**Significance:** First on-target microglia measured data in the benchmark. Direction is NOT
+predictable by AlphaGenome or motifs even here. IMPORTANT caveats: (1) 3'-UTR post-
+transcriptional layer ≠ the enhancer/chromatin layer of rs6733839's mechanism; (2)
+significance is a direction estimate, not the paper's GLMM. So this CONFIRMS the null in the
+on-target cell type but does NOT substitute for microglia enhancer/caQTL data.
+
+**Source status:** #2 NPC MPRA = DONE. #4 Chen 3'-UTR = DONE (this update). #3 Kosoy microglia
+caQTL = STILL access-gated (Synapse token / NIAGADS DAR) — remains the pivotal missing piece
+for the enhancer-layer wedge. #1 peripheral-immune = dropped (CNN predictions, not MPRA).
+
+Commit: 97b94b61.
