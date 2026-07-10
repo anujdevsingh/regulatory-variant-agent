@@ -39,9 +39,12 @@ predictable** — not by:
 - our grammar-aware wedge model — AUROC 0.52.
 
 Every model's *honest* directional metric is at chance — AUROC 0.47–0.53 for all, and
-every accuracy CI includes 0.5 except Borzoi's raw score, whose 0.236 [.208,.266] is a
-zero-inflation artifact (its honest nonzero-subset accuracy is 0.486 [.433,.538], which
-does span 0.5). None reaches the 0.547 majority-class rate. This is not a
+none reaches the 0.547 majority-class rate. Two accuracy CIs sit *below* 0.5 rather than
+spanning it: PWM Δ-score [.429,.499] and Borzoi's raw score [.208,.266]. Neither is
+evidence of real directional signal — being below chance under a sign() rule just means
+the sign is flipped more often than not (Borzoi's is a zero-inflation artifact: 51% of
+variants get Δ=0, auto-scored wrong; its honest nonzero-subset accuracy is 0.486
+[.433,.538], which spans 0.5). Every other model's CI includes 0.5. This is not a
 weak signal we failed to capture — it is a well-powered null (n=788), consistent across
 seven independent modeling approaches including in-distribution training.
 
