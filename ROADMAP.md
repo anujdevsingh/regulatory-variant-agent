@@ -194,3 +194,33 @@ caQTL = STILL access-gated (Synapse token / NIAGADS DAR) — remains the pivotal
 for the enhancer-layer wedge. #1 peripheral-immune = dropped (CNN predictions, not MPRA).
 
 Commit: 97b94b61.
+
+
+---
+
+## Session 4 (2026-07-10) — Kosoy microglia caQTL: the on-target test + findings writeup
+
+**The pivotal dataset obtained.** User downloaded the Kosoy 2022 microglia meta-caQTL
+summary (Synapse syn30308248, AD Knowledge Portal open tier; 45.8M variant×peak rows,
+95 donors). Harmonized to benchmark convention: 1,478 of our variants have microglia
+caQTL direction; 361 held out (chr 2,6,11,19). New context "microglia (caQTL chromatin)".
+
+**Result — all models at chance on the fairest possible test** (native cell type, native
+chromatin-accessibility task): PWM 0.493, Logistic(in-dist) 0.529, GBT(in-dist) 0.499,
+AlphaGenome 0.537 [.485,.587], Borzoi 0.551 [.499,.601]; majority-class 0.565. Borzoi
+0/361 zero-inflation (clean). Even in-distribution training is at chance — directional
+signal is not in local sequence.
+
+**rs6733839 mechanism resolved (mirror image).** Risk-T OPENS chromatin (caQTL, Z=3.34)
+but REPRESSES enhancer activity (MPRA). AlphaGenome: caQTL correct / MPRA wrong. Borzoi:
+caQTL wrong / MPRA correct. No single model is right — accessibility↔activity decoupling
+is the real "wedge."
+
+**Findings writeup + summary figure committed** (results/FINDINGS_WRITEUP.md,
+results/fig_writeup_summary.png). This is the honest close: a well-powered negative on the
+general direction task + a mechanistic explanation via the anchor variant.
+
+**Verdict:** definition-of-done met as a well-characterized negative. Open next directions
+logged (selective prediction/abstention; predict-the-decoupling; add eQTL layer syn30308484).
+
+GPU: fierce-crimson-frog (L40S) — delete after session.
