@@ -42,7 +42,13 @@ the risk-T allele OPENS chromatin in microglia.
 | Layer | Measured (risk-T) | AlphaGenome |
 |---|---|---|
 | Chromatin accessibility (caQTL, this data) | OPENS (+, Z=3.3) | predicts OPENS → **CORRECT** |
-| Enhancer output (MPRA, THP-1/HMC3) | REPRESSES (−, SPI1) | assumed activates → **WRONG** |
+| Enhancer output (MPRA, THP-1/HMC3) | REPRESSES (−) | assumed activates → **WRONG** |
+
+(Which TF drives the MPRA repression is not settled here: the 2025 AD-MPRA source models it
+as SPI1-mediated, whereas our own JASPAR analysis found the risk-T allele creates a strong
+new MEF2A site (+7.56 bits) while SPI1 is essentially unchanged (+0.18). The caQTL result
+below is independent of that TF question — it concerns the accessibility direction, not the
+responsible factor.)
 
 The variant OPENS chromatin while REPRESSING transcriptional output. These are different
 molecular layers. AlphaGenome reads the accessibility layer correctly — its MPRA
