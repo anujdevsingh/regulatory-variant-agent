@@ -7,7 +7,23 @@ not load-bearing.*
 
 ## Phase 1 — the decoupling statistic (THE CORE)
 
-### 1.1 Paired-layer set
+### 1.1b CLEAN same-donor caQTL∩eQTL (added after eQTL download syn30308484)
+The primary, cleanest pairing — chromatin accessibility vs gene expression in the SAME
+95 microglia donors, no cross-cell-type confound. 1,322 of our variants matched the
+microglia meta-eQTL map; harmonized to alt-allele convention (0 mismatches).
+- **caQTL–eQTL sign concordance, sig-in-both: 0.506 [0.455, 0.556], n=354, p=0.87**
+- All paired: 0.511 [0.485,0.538] (n=1322); caQTL-sig: 0.519; eQTL-sig: 0.503.
+**This is the definitive result the plan was built toward, and it CONFIRMS independence
+cleanly** — chromatin and expression directions are statistically indistinguishable from
+50/50 in the native cell type, with no cross-lineage proxy. (`caqtl_eqtl_concordance.csv`,
+`fig_caqtl_eqtl_clean.png`.)
+
+rs6733839 three-layer (microglia): chromatin OPENS (+, Z=3.3), expression BIN1 UP (+, Z=6.4),
+enhancer-activity MPRA REPRESSES (−). Native-genome layers (chromatin+expression) AGREE;
+the episomal MPRA disagrees — consistent with the variant acting in genomic context, not
+as an isolated enhancer element.
+
+### 1.1 Paired-layer set (secondary caQTL∩activity route)
 Built `results/decoupling/paired_layers.csv`: variants with BOTH a microglia caQTL
 direction (Kosoy syn30308248, paper statistic) AND an activity direction (MPRA/SuRE).
 - **Total paired: 1,478** — feasibility gate (≥150) cleared many times over.

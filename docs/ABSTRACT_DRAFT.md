@@ -22,11 +22,14 @@ in-distribution on the caQTL data itself are all statistically indistinguishable
 chance (majority-class 0.565). Direction is not recoverable from local sequence.
 
 To explain this negative, we tested whether a variant's effect on chromatin accessibility
-predicts its effect on enhancer/expression activity. Across 685 variants significant in
-both layers, sign concordance was 0.528 (95% CI 0.491-0.565; binomial p=0.15) — the two
-layers are statistically **independent**: a variant's accessibility direction carries
-essentially no information about its activity direction. This independence is robust to
-dropping estimate-based datasets (0.53 in every subset). Consistent with an
+predicts its effect on enhancer/expression activity. In the cleanest test — chromatin
+accessibility versus gene expression in the SAME 95 microglia donors (caQTL vs eQTL,
+Kosoy) — sign concordance across 354 variants significant in both layers was 0.506 (95%
+CI 0.455-0.556; binomial p=0.87): the two layers are statistically **independent**, with
+no cross-cell-type confound. A secondary caQTL-versus-enhancer-activity pairing (685
+variants, MPRA/SuRE) gave the same result (0.528, 95% CI 0.491-0.565), robust to dropping
+estimate-based datasets (0.53 in every subset). A variant's accessibility direction
+carries essentially no information about its expression/activity direction. Consistent with an
 accessibility-reading mechanism, both frontier models trend more accurate on variants
 whose layers agree (Borzoi 0.625) than on decoupled variants (0.538), though this
 stratified difference is not individually significant at current n. The Alzheimer's-risk
@@ -46,5 +49,6 @@ paired-layer decoupling statistic, and per-variant scores as a reusable resource
 - SUGGESTIVE / UNDERPOWERED: model-accuracy-by-concordance (right shape, overlapping CIs).
 - NOT SHOWN: decoupling is NOT predictable from sequence features (AUROC 0.441) — honest
   negative that limits the "reusable predictor" claim.
-- GENUINELY OPEN: the SPI1-vs-MEF2A mechanism; the clean same-cell-type caQTL∩eQTL number
-  (needs syn30308484); the Boltz co-fold (GPU-deferred).
+- NOW SOLID (added): the clean same-donor caQTL∩eQTL number (0.506, n=354) — confirms
+  independence with no cross-cell-type confound.
+- GENUINELY OPEN: the SPI1-vs-MEF2A mechanism; the Boltz co-fold (GPU-deferred).
