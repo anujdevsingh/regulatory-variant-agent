@@ -1,0 +1,6 @@
+TF,evidence_layer,finding,direction
+MEF2A,sequence (JASPAR),creates +7.56-bit site,favors
+MEF2A,chromatin (caQTL measured),"risk-T opens, consistent w/ activator gain",favors
+MEF2A,AlphaGenome TF-ChIP (predicted),top signal 0.315,favors
+SPI1,sequence (JASPAR),"Δ +0.18, unchanged",against site-change
+SPI1,AD-MPRA 2025 (paper model),attributed repression to SPI1,favors (activity layer)

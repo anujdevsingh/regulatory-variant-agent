@@ -1,0 +1,6 @@
+source,assay,direction_derivation,provenance,role
+KOSOY_caQTL_2022,microglia caQTL,Beta + Z_score_fixed,"PAPER STATISTIC (meta-caQTL summary, syn30308248)",headline
+AD_MPRA_2025,THP-1/HMC3/brain MPRA,logFC_Major_Minor + FDR,PAPER STATISTIC (2025 AD-MPRA supp table),supporting
+SuRE_raQTL,K562/HepG2 SuRE,alt.mean-ref.mean + wilcox p,PAPER STATISTIC (van Arensbergen raQTL),supporting
+PSYCH_MPRA_2024,NPC MPRA,joint-norm skew + paired-t FDR,OUR ESTIMATE from count matrices (GSE244011); not paper's GLMM,supporting
+CHEN_3UTR_2024,microglia/SH 3'UTR,variant-summed t-test p<0.01,OUR ESTIMATE from summed counts (GSE253841); NOT paper's GLMM,estimate/robustness only
