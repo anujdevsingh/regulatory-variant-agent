@@ -70,7 +70,10 @@ held-out track prediction and are now routinely used for in-silico variant scori
 Track-prediction accuracy, however, is not the quantity a variant-interpretation pipeline
 needs. The clinically and mechanistically actionable question is directional: does a given
 variant *increase* or *decrease* accessibility, transcription-factor binding, or expression
-in the relevant cell type? Directional accuracy is seldom reported as a headline metric,
+in the relevant cell type? The ground truth for this question comes from functional assays —
+massively parallel reporter assays, including saturation mutagenesis of regulatory elements
+at single-base resolution [8], and QTL maps — against which model predictions can be scored.
+Directional accuracy is nonetheless seldom reported as a headline metric,
 and independent evaluations on causal-variant benchmarks have found that effect-size
 correlations for state-of-the-art models remain modest [5]. Whether the leading models can
 reliably call the *sign* of a variant's effect — particularly for the context-dependent,
@@ -156,8 +159,8 @@ features, evaluated under the same chromosome split (AUROC with bootstrap CI).
 
 ### Structural co-fold
 The MEF2A MADS-box dimer (sequence from PDB 1EGW) was co-folded with the 17-bp *BIN1*
-enhancer duplex centered on rs6733839, for both alleles, using Boltz-2 (Passaro, Wohlwend
-et al. 2025; github.com/jwohlwend/boltz) with five diffusion samples, three recycling steps,
+enhancer duplex centered on rs6733839, for both alleles, using Boltz-2 [12] with five
+diffusion samples, three recycling steps,
 and MSA-server profiles. The protein–DNA interface was quantified as the number of
 protein–DNA atom pairs within 4 Å.
 
@@ -224,8 +227,9 @@ than on decoupled ones (both 0.538) — but the confidence intervals overlap, so
 stratified effect is suggestive rather than significant at present sample size (Figure 2).
 
 ### rs6733839 anchors the mechanism across three measured layers
-The lead *BIN1* Alzheimer's variant rs6733839 is present in all three microglia layers with
-strong, measured signals (Table 3). The risk allele opens chromatin and raises *BIN1*
+The lead *BIN1* Alzheimer's variant rs6733839 — fine-mapped as the credible causal variant
+at this locus [9] and previously implicated in myeloid regulatory function [10] — is present
+in all three microglia layers with strong, measured signals (Table 3). The risk allele opens chromatin and raises *BIN1*
 expression — the two native-genome readouts agree — while repressing episomal enhancer
 activity in the reporter assay. Both AlphaGenome and Borzoi call one layer correctly and the
 other backwards, each in a different direction; there is no single model that is "right"
@@ -332,12 +336,20 @@ All data, split manifests, per-variant model scores, figures, and analysis code 
 the conclusions of this article are available in the repository
 `github.com/anujdevsingh/regulatory-variant-agent` under the `bench/` and `results/`
 directories, committed per analysis stage with configuration and random seed. Primary public
-datasets: human-microglia caQTL and meta-eQTL (Kosoy et al. [6]; AD Knowledge Portal /
-Synapse syn30308248 and syn30308484, controlled-access under that portal's terms); SuRE
-raQTL [7]; the 2025 context-dependent AD-MPRA [13]; GEO GSE244011 and GSE253841. Structure
-predictions used Boltz-2 (github.com/jwohlwend/boltz); variant scoring used the AlphaGenome
-API [3] (non-commercial terms) and Borzoi open weights (replicate 0) [4]. Genome build
-GRCh38.
+datasets: human-microglia caQTL and meta-eQTL summary statistics (Kosoy et al. [6]; AD
+Knowledge Portal / Synapse syn30308248 and syn30308484), which are registered-access — freely
+downloadable after creating an account and agreeing to the portal's data-use terms, with no
+sponsor approval required; SuRE raQTL [7]; the 2025 context-dependent AD-MPRA [13]; GEO
+GSE244011 and GSE253841 (open). Structure predictions used Boltz-2 [12]; variant scoring used
+the AlphaGenome API [3] (non-commercial terms) and Borzoi open weights (replicate 0) [4].
+Genome build GRCh38.
+
+### Ethics approval and consent to participate
+Not applicable. This study is a secondary analysis of previously published, de-identified
+public datasets and does not involve new human or animal subjects.
+
+### Consent for publication
+Not applicable.
 
 ### Competing interests
 The author declares no competing interests.
