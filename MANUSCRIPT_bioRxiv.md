@@ -120,8 +120,9 @@ reference/alternate convention.
 ### Chromosome split
 All evaluation uses a fixed split by **chromosome** (test = chr 2, 6, 11, 19; chr2 forced
 to retain *BIN1*/rs6733839; random seed 0), never by variant, to prevent
-linkage-disequilibrium leakage between train and test. The split manifest is version-
-controlled with the data.
+linkage-disequilibrium leakage between train and test. The split assigns whole chromosomes
+to train or test while retaining every cell context in both partitions (Supplementary
+Figure S1). The split manifest is version-controlled with the data.
 
 ### Models, baselines, and controls (all scored on the identical held-out set)
 - **AlphaGenome** [3] via the public API: 1 Mb context; ATAC and DNase modalities;
@@ -436,3 +437,15 @@ orientation for the reference (non-risk C) and alternate (risk T) alleles. Both 
 are high-confidence (interface pTM 0.978); the risk allele forms a tighter protein–DNA
 interface (+12.5% contacts within 4 Å). The rs6733839 site is marked.
 `results/decoupling/fig_boltz_cofold.png`
+
+---
+
+## Supplementary materials
+
+**Supplementary Figure S1.** Composition of the chromosome-split benchmark (6,377
+variant×context measurements; 4,883 train, 1,494 test). (A) Variants per chromosome, with
+the four held-out test chromosomes (2, 6, 11, 19; seed 0) in red; chr2 is forced to the test
+set to retain *BIN1*/rs6733839. (B) Variants per cell context, showing that the
+chromosome-level split preserves every one of the nine contexts in both the train and test
+partitions.
+`results/fig_S1_split_manifest.png`
