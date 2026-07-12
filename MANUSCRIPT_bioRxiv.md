@@ -59,13 +59,14 @@ sequence-to-function models
 Genome-wide association studies (GWAS) localize the large majority of disease-associated
 variants to noncoding sequence, where mechanistic interpretation requires predicting a
 variant's effect on gene regulation. A decade of sequence-to-function deep learning has
-transformed this problem: DeepSEA [1] and Basset [2] first showed that convolutional
-networks trained on ENCODE chromatin data could predict the regulatory impact of single
-nucleotide changes; the field has since scaled to long-context transformer and U-Net
-architectures — Borzoi, which predicts RNA-seq coverage and other assays over 524 kb
-windows [4], and AlphaGenome, which processes up to one megabase at base-pair resolution
-across eleven molecular modalities [3]. These models advance the state of the art on
-held-out track prediction and are now routinely used for in-silico variant scoring.
+transformed this problem: DeepSEA [1] and Basset [2] first demonstrated that convolutional
+networks trained on ENCODE chromatin profiles could infer how a single-nucleotide change
+alters regulatory signal; the field has since scaled to long-context transformer and U-Net
+architectures — Borzoi, which models RNA-seq coverage together with additional assays across
+524 kb windows [4], and AlphaGenome, which operates on sequence contexts up to a megabase and
+resolves several regulatory modalities at base-pair scale [3]. These models set the current
+standard on held-out track prediction and are now routinely applied to in-silico variant
+scoring.
 
 Track-prediction accuracy, however, is not the quantity a variant-interpretation pipeline
 needs. The clinically and mechanistically actionable question is directional: does a given
