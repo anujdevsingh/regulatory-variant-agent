@@ -1,175 +1,98 @@
 # regulatory-direction-independence
 
-**Trace a noncoding disease variant to the transcription-factor motif it affects — directly from DNA sequence.**
+**Can sequence-to-function models predict the *direction* of a noncoding variant's regulatory effect? A benchmark, a negative result, and the mechanism behind it — in human microglia.**
 
 Built with **Claude Science** for the *Built with Claude: Life Sciences* hackathon (Research track, Jul 2026).
 
-Given a noncoding variant, this tool predicts its effect on chromatin accessibility from sequence (a pretrained **ChromBPNet** model), scans the effect across brain cell types, runs **in-silico mutagenesis + DeepSHAP-style attribution** to see *which bases the model weights*, and matches the region to **JASPAR** transcription-factor motifs — all from an rsID, in one command.
+📄 **Preprint:** [`MANUSCRIPT_bioRxiv.pdf`](MANUSCRIPT_bioRxiv.pdf) — full journal-formatted manuscript (also [`MANUSCRIPT_bioRxiv.md`](MANUSCRIPT_bioRxiv.md)).
+📈 **Roadmap / provenance:** [`ROADMAP.md`](ROADMAP.md) — living log of every stage with config, seed, and data-split manifest.
 
-> **What this is:** a reusable, sequence-based variant-interpretation instrument. The Alzheimer's variant below is a worked example of it running on a real disease locus — with an honest, nuanced result, not a forced one.
+---
 
-> **Status & next steps:** see [`ROADMAP.md`](ROADMAP.md) — a living doc of what's done, an honest self-assessment, and the chosen next direction (updated each session).
+## The finding in one paragraph
 
-## Quick start
+Sequence-to-function deep-learning models (Borzoi, AlphaGenome, and the DeepSEA/Basset lineage before them) predict genomic assay *tracks* with high accuracy and are increasingly used to interpret disease-associated noncoding variants. But the question a variant-interpretation pipeline actually needs answered is directional: does this variant push accessibility / expression **up or down** in the relevant cell type? We benchmarked that directly, in the microglia / brain / immune context where the disease biology lives. **On the fairest achievable test — chromatin-accessibility direction in the native cell type — every model is at chance:** AlphaGenome 0.537, Borzoi 0.551, motif-PWM floors, and even models trained in-distribution on the data itself, all statistically indistinguishable from a majority-class baseline (0.565). We then show *why*: in the **same 95 donors**, a variant's effect on chromatin accessibility and its effect on gene expression are **statistically independent** (sign concordance 0.506, 95% CI 0.455–0.556, p = 0.87). A model that reads one regulatory layer cannot recover the direction of another layer it does not read.
+
+---
+
+## Results
+
+### 1. No model predicts accessibility direction in the native cell type
+
+![Directional benchmark in native microglia — all models at chance](results/fig_caqtl_result.png)
+
+Direction accuracy with 95% bootstrap CIs on the held-out human-microglia caQTL test (95-donor map). AlphaGenome and Borzoi are scored on their intended task, in their intended cell context, and neither separates from the majority-class baseline. This is not a model-capacity problem — in-distribution training lands at chance too.
+
+### 2. The decoupling is systematic, at scale
+
+![Accessibility vs activity direction decoupling across contexts](results/decoupling/fig_phase1_decoupling.png)
+
+Across paired regulatory layers, the sign of a variant's accessibility effect does not predict the sign of its activity effect. The relationship sits at coin-flip across every stratification tested.
+
+### 3. Same-donor caQTL vs eQTL — the clean number
+
+![Same-donor caQTL vs eQTL sign concordance](results/decoupling/fig_caqtl_eqtl_clean.png)
+
+The definitive test, free of any cross-cell-type confound: in the *same 95 microglia donors*, chromatin-accessibility QTLs and expression QTLs agree on direction only 50.6% of the time (n = 354 variants significant in both layers; p = 0.87). Accessibility and expression effect-directions are statistically independent.
+
+### 4. rs6733839 (BIN1 / Alzheimer's) anchors the mechanism
+
+![Boltz-2 co-fold: MEF2A on the BIN1 enhancer, both alleles](results/decoupling/fig_boltz_cofold.png)
+
+The lead *BIN1* Alzheimer's variant makes it concrete. It **opens** chromatin (caQTL Beta +0.147, Z 3.3) and **raises** BIN1 expression (eQTL Beta +0.482, Z 6.4) in microglia — the two native-genome layers agree — while **repressing** episomal enhancer activity in a reporter assay. Three measured layers, not all in the same direction. A Boltz-2 protein–DNA co-fold shows the risk allele grips the MEF2A transcription factor more tightly (287 vs 255 interface contacts, +12.5%; both alleles high-confidence, interface pTM 0.978), consistent with the risk allele creating a stronger MEF2 site.
+
+---
+
+## Why this matters
+
+The practical takeaway for anyone using sequence models to interpret variants: **do not trust a single-layer model's direction call on the variants that matter most for disease.** The models are excellent at what they were trained for (track prediction) and unreliable at the directional question they are increasingly asked. This repo provides an open, chromosome-split benchmark and every per-variant score so the field has a like-for-like way to measure directional accuracy.
+
+---
+
+## Repository layout
+
+```
+bench/         harmonized benchmark: variants with measured direction, split manifest, per-model scores
+results/       figures + result tables (caQTL scoreboard, floor baselines, ...)
+  decoupling/  Phase 1–3 decoupling analysis, same-donor caQTL∩eQTL, Boltz co-fold, structures
+docs/          publication plan, hackathon summary, demo video guide
+MANUSCRIPT_bioRxiv.md / .pdf    the preprint
+ROADMAP.md     living provenance log (per-stage config, seed, split)
+score_variant.py                the sequence-based variant-scoring tool (see below)
+```
+
+Everything is committed per analysis stage with configuration and random seed. Genome build GRCh38 throughout.
+
+### Benchmark data sources
+
+| Source | Layer / context | Access |
+|---|---|---|
+| Kosoy et al. 2022 caQTL + meta-eQTL (95 microglia donors) | chromatin accessibility, expression | AD Knowledge Portal / Synapse (registered — account + data-use terms, no sponsor) |
+| SuRE raQTL (K562, HepG2) | episomal activity | open (OSF) |
+| 2025 context-dependent AD-MPRA | THP-1, HMC3, brain, HEK293T | open |
+| GSE244011, GSE253841 | NPC MPRA, 3′-UTR MPRA | open (GEO) |
+
+Variant scoring used the AlphaGenome API (non-commercial terms) and Borzoi open weights (replicate 0). Structure prediction used Boltz-2.
+
+---
+
+## The `score_variant.py` tool
+
+The repo also contains the sequence-based variant-interpretation tool built in the earlier phase of the project: given an rsID, it predicts a variant's chromatin-accessibility effect from a pretrained **ChromBPNet** model, runs in-silico mutagenesis + attribution to localize which bases the model weights, and matches the region to **JASPAR** motifs.
 
 ```bash
-pip install -r requirements.txt          # tensorflow 2.13, numpy<2, scipy, ...
-
+pip install -r requirements.txt
 # download the brain ChromBPNet models (Zenodo 10.5281/zenodo.10605867), then:
 python score_variant.py --rsid rs6733839 \
-    --model models/Microglia_chrombpnet_nobias.h5 \
-    --outdir results/
-```
-
-Output: a JSON with the ref/alt accessibility change, ISM localization, and JASPAR motif scan. Point `--model` at any of the six cell-type models; pass `--motifs MA0052.4 MA0497.1 ...` for any JASPAR IDs. Works from `--rsid`, or `--chrom/--pos/--ref/--alt` for un-catalogued variants.
-
-Add `--calibrate PEAK_BED` (an ENCODE narrowPeak `.bed.gz`) to also score a null of common SNPs from those peaks and report the variant's **percentile + z-score** — turning the raw log2FC into a scaled result:
-
-```bash
-python score_variant.py --rsid rs6733839 \
-    --model models/Microglia_chrombpnet_nobias.h5 \
-    --calibrate cortex_peaks.bed.gz --n-null 250 --outdir results/
-```
-
-Run `--credible-set` mode to score a **published fine-mapping credible set** through the model and ask whether the fine-mapped variant is also the largest-effect one — the highest-value question after single-variant scoring (GWAS gives a locus, not a variant):
-
-```bash
-python score_variant.py \
-    --credible-set fine_mapping_supp.xlsx --cs-locus BIN1 --cs-min-prob 0.01 \
-    --rsid rs6733839 \
     --model models/Microglia_chrombpnet_nobias.h5 --outdir results/
 ```
 
-It filters the table to the locus, resolves each variant's effect allele, scores ref→alt through the model, and writes a ranked JSON + summary stats (each variant's log2FC, its |effect| rank, and the Spearman correlation between fine-mapping probability and predicted effect). Passing `--rsid` marks that variant as the focus in the output. Column names default to the Schwartzentruber 2021 schema; override any of them with `--cs-col KEY COLNAME` (e.g. `--cs-col prob PP`).
+It supports `--calibrate PEAK_BED` (percentile + z-score against a common-SNP null) and `--credible-set TABLE.xlsx` (score a published fine-mapping credible set and test whether the fine-mapped variant is also the largest-effect one). This tool is a *component* of the project, not its headline result — the benchmark and the decoupling finding above are the contribution.
 
-## Worked example: rs6733839 (BIN1 / Alzheimer's)
+---
 
-**`rs6733839`** — one of the strongest common Alzheimer's GWAS signals, ~28 kb upstream of **BIN1**.
-- **Location:** chr2:127,135,234 (GRCh38), **C→T** (T = AD-risk allele, MAF ≈ 0.40)
-- **Literature hypothesis:** the risk allele alters a **MEF2** binding site in a **microglia-specific enhancer**, changing BIN1 regulation.
+## Citation
 
-### What the model actually found (honest result)
+If you use this benchmark or the analysis, please cite the preprint (see [`MANUSCRIPT_bioRxiv.md`](MANUSCRIPT_bioRxiv.md) for the full reference list and author details).
 
-| Question | Result |
-|---|---|
-| Is the variant in a MEF2 motif? | **Yes** — MEF2A (`MA0052.4`) and MEF2C (`MA0497.1`) both span it (JASPAR scan). ✅ |
-| Does the risk allele lower microglial accessibility? | **No** — predicted change is tiny and *positive* (log2FC **+0.026**). |
-| Is the effect microglia-specific? | **No** — small and positive in microglia (+0.026, 3rd of 6 by signed effect); largest in inhibitory neurons (+0.229). |
-| Does the model weight the variant base? | **No** — near-zero attribution at the variant; the model weights an adjacent C/T-rich (PU.1-like) element. Two attribution methods agree (r = 0.92). |
-| How big is the effect, on a scale? | **Typical** — calibrated against 266 common SNPs in brain ATAC peaks, rs6733839 is at the **54th percentile** (z = −0.29), i.e. not an outlier ([`CALIBRATION.md`](results/CALIBRATION.md)). |
-| Is rs6733839 the functional variant at the locus? | **Statistically yes, mechanistically unexplained** — in the published fine-mapping credible set (Schwartzentruber 2021, 25 variants), rs6733839 is the causal variant (posterior **0.998**) but only **11th of 25** by predicted effect; posterior and predicted effect are uncorrelated (ρ=+0.16). Statistical causality and predicted chromatin effect are decoupled ([`ALLELIC_SERIES.md`](results/ALLELIC_SERIES.md)). |
-
-**Reading:** the MEF2 motif overlap is real and confirmed, but this scATAC-pseudobulk microglia model does **not** reproduce a strong, microglia-selective "risk allele breaks MEF2 → less accessibility" story. That is a legitimate, honestly-reported finding — real biology is messier than the one-line hypothesis, and the tool surfaces that rather than forcing a dramatic answer. See [`results/RESULTS.md`](results/RESULTS.md) for the full analysis and caveats.
-
-![variant prediction + ISM](results/fig1_variant_prediction.png)
-
-### Multimodal cross-check with AlphaGenome — the puzzle resolves
-
-The ChromBPNet result left a puzzle: rs6733839 is the fine-mapped **causal** variant (posterior 0.998), yet its predicted *microglial accessibility* effect is tiny and points at an adjacent element, not the variant base. We scored the same variant through **AlphaGenome** (Avsec et al. 2026), a multimodal sequence model, over a 1 Mb window — **12,848 track-level effect scores** across chromatin accessibility (ATAC), DNase, transcription-factor binding (ChIP), and gene expression (RNA-seq).
-
-| Modality | AlphaGenome peak \|effect\| | Reading |
-|---|---|---|
-| Chromatin accessibility (ATAC) | 0.237 log2FC | modest — **agrees with ChromBPNet** |
-| DNase sensitivity | 0.263 log2FC | modest, same story |
-| **TF binding (ChIP)** | **0.315 log2FC (MEF2A, quantile 0.99)** | **largest effect — the variant changes TF occupancy** |
-| Gene expression (BIN1) | 0.041 log2FC, **quantile 1.00** | small magnitude but top-of-distribution *for BIN1* |
-
-**The mechanism the accessibility model couldn't see is transcription-factor binding.** And the two independent models converge: ChromBPNet's ISM + JASPAR scan flagged that risk-allele T *strengthens a MEF2 motif*; AlphaGenome independently predicts risk-T **increases MEF2A binding** (+0.315, q=0.99) and **SPI1/PU.1 binding** (+0.168, q=0.97) — the same two transcription factors ChromBPNet's attribution pointed at. Two separately-trained state-of-the-art models agreeing on the TFs is far stronger evidence than either alone. Full analysis + caveats (cell-type mismatch on the peak tracks, black-box scores): [`results/AG_MULTIMODAL_RESULTS.md`](results/AG_MULTIMODAL_RESULTS.md).
-
-![AlphaGenome multimodal cross-check](results/fig6_alphagenome_multimodal.png)
-
-### Validated against measured wet-lab data (MPRA)
-
-We went one step past prediction: we found **published MPRA data** (massively
-parallel reporter assays — real measured transcriptional activity) that tested
-rs6733839, and checked our predictions against it. The rs6733839-specific measurements come from a 2025 context-dependent AD MPRA preprint (which also reports that
-*earlier* MPRA work saw no significant allele effect); Cooper et al. 2022 *Science* is cited as
-the landmark large-scale AD-variant MPRA for context. **5 of 6 of our predictions are
-confirmed by independent measurement** — the variant is functional, its effect is
-subtle (SNP-centered MPRA sees no significant effect, matching our "54th
-percentile"), the mechanism is TF binding, and the TFs are MEF2 + SPI1. The one
-miss — direction in immune cells — reveals that rs6733839 acts as a
-*context-dependent repressor*, a documented limit of single-locus sequence
-models. Full scorecard + honest reading: [`results/MPRA_VALIDATION.md`](results/MPRA_VALIDATION.md).
-
-![prediction vs measured MPRA](results/fig7_mpra_validation.png)
-
-### See it in 3D — the transcription factors, bound to DNA
-
-To make the mechanism tangible, we rendered the two TFs our models + MPRA
-implicate as **real experimental co-crystal structures** clamped onto DNA:
-**PU.1/SPI1** (PDB 1PUE, immune/repression) and the **MEF2A** dimer (PDB 1EGW,
-brain/activation). Both are interactive 3D artifacts (rotate/zoom):
-[`results/structures/PU1_SPI1_DNA.pdb`](results/structures/PU1_SPI1_DNA.pdb),
-[`results/structures/MEF2A_DNA.pdb`](results/structures/MEF2A_DNA.pdb). Details
-and caveats: [`results/VISUALIZATION_3D.md`](results/VISUALIZATION_3D.md).
-
-![TF–DNA structures](results/fig8_tf_dna_structures.png)
-
-**And the variant itself, in 3D.** We took the honest next step: instead of the
-consensus site, we threaded the **real BIN1 enhancer sequence** (reference C vs
-Alzheimer's-risk T) onto the MEF2A crystal DNA. A JASPAR scan of the actual
-genomic sequence shows the risk **T creates a strong MEF2 site (+7.56 bits)**,
-with the variant base sitting inside the MEF2 footprint (SPI1 barely changes,
-+0.18). Interactive ref/alt structures:
-[`results/structures/MEF2A_rs6733839_REF_C.pdb`](results/structures/MEF2A_rs6733839_REF_C.pdb),
-[`results/structures/MEF2A_rs6733839_ALT_T.pdb`](results/structures/MEF2A_rs6733839_ALT_T.pdb).
-Method + caveats (threading, not docking): [`results/THREADING_rs6733839.md`](results/THREADING_rs6733839.md).
-
-![rs6733839 threaded onto MEF2A](results/fig9_rs6733839_threaded.png)
-
-**And what the variant DOES — a quantitative effect prediction.** Reading the
-MEF2A motif thermodynamically (Berg–von Hippel: PWM log-odds ≈ −ΔG/kT), the
-+7.56-bit gain predicts **~190× tighter MEF2A binding** for the risk T allele
-(λ=1) — a large shift in site occupancy. Four readouts agree in direction — three predictions
-(motif model, AlphaGenome ChIP, ChromBPNet) plus one measured (brain MPRA from
-PMC12265656, cross-checked in [`results/MPRA_VALIDATION.md`](results/MPRA_VALIDATION.md)). The gold-standard
-structural confirmation — a Boltz-2 co-fold of ref vs alt MEF2A–DNA — is staged
-and ready ([`results/boltz/`](results/boltz/)); it needs a GPU host connected.
-Details + caveats: [`results/EFFECT_PREDICTION.md`](results/EFFECT_PREDICTION.md).
-
-![effect prediction](results/fig10_effect_prediction.png)
-
-## Pipeline
-
-```
-rsID / coords
-   -> fetch GRCh38 window (2,114 bp, variant-centered)      [Ensembl + UCSC]
-   -> ChromBPNet forward pass (ref & alt)                    -> log2FC of counts, profile JSD
-   -> cell-type scan (6 brain models)                        -> is the effect cell-type-specific?
-   -> in-silico mutagenesis + expected-gradients attribution -> which bases does the model weight?
-   -> JASPAR motif scan (ref vs alt)                          -> which TF motif spans the variant?
-   -> [--calibrate] null of common SNPs in ATAC peaks         -> percentile + z-score (is the effect big?)
-   -> [--credible-set] score a fine-mapping credible set       -> is the causal variant the largest predicted effect?
-```
-
-## Status
-
-- [x] Scoping + literature grounding + data/tool verification → [`SCOPING.md`](SCOPING.md)
-- [x] Resolve cell-type model — **microglia ChromBPNet obtained** (Zenodo 10.5281/zenodo.10605867; confirmed the `Microglia_chrombpnet*.h5` files exist and load)
-- [x] Score rs6733839 end-to-end (ref/alt Δ) → `results/`
-- [x] Cell-type specificity scan (6 brain cell types)
-- [x] ISM + DeepSHAP-style attribution + JASPAR motif match
-- [x] One-command reusable tool → [`score_variant.py`](score_variant.py)
-- [x] Calibration against a null variant background — **rs6733839 is at the 54th percentile of common brain-peak SNPs (z = −0.29)**, i.e. a typical effect (`results/CALIBRATION.md`)
-- [x] Credible-set scan — scored the published fine-mapping credible set (Schwartzentruber 2021, 25 variants); rs6733839 is the causal variant (PP=0.998) but 11th of 25 by predicted effect (`results/ALLELIC_SERIES.md`)
-- [x] Multimodal cross-check — scored rs6733839 through **AlphaGenome** (12,848 tracks, 4 modalities); largest effect is **TF binding (MEF2A, q=0.99)**, independently corroborating the ChromBPNet MEF2/SPI1 motif hit (`results/AG_MULTIMODAL_RESULTS.md`)
-- [x] **MPRA validation** — checked predictions against published measured MPRA data (rs6733839-specific measurements from a 2025 context-dependent AD MPRA preprint; Cooper 2022 *Science* cited as the landmark large-scale AD MPRA for context); **5 of 6 predictions confirmed by independent wet-lab measurement** (`results/MPRA_VALIDATION.md`)
-- [ ] Demo video + write-up
-
-## Data & models
-
-- **Model:** brain-cell-type **ChromBPNet** models (base-resolution ATAC CNN, Tn5-bias-factorized), trained on **Corces scATAC pseudobulk** by the PsychENCODE/Weng group — Zenodo **10.5281/zenodo.10605867** (`Zenodo/data/chrombpnet/*_chrombpnet_nobias.h5`): Microglia, Astrocytes, Excitatory/Inhibitory neurons, Oligodendrocytes, OPCs. Underlying method: [ChromBPNet](https://github.com/kundajelab/chrombpnet).
-- **Variant/coords:** Ensembl REST (GRCh38); **sequence:** UCSC hg38 API.
-- **Motifs:** JASPAR CORE vertebrates (MEF2A `MA0052.4`, MEF2C `MA0497.1`).
-- **Multimodal model:** **AlphaGenome** (Avsec et al. 2026, Nature) via the Google DeepMind API — 1 Mb window, ATAC/DNase/TF-ChIP/RNA-seq effect scores. Requires an AlphaGenome API key (env `ALPHAGENOME`).
-- **Fine-mapping credible set:** Schwartzentruber et al. 2021, *Nat Genet* (DOI 10.1038/s41588-020-00776-w), Supplementary Table 8.
-- **Calibration null:** common SNPs (MAF≥0.05) from ENCODE cortex ATAC IDR peaks (ENCFF221FSW).
-
-See [`DATA.md`](DATA.md) for every dataset used — source, size, license, and whether it is committed in-repo or fetched on demand.
-
-See [`SCOPING.md`](SCOPING.md) for the full method lineage, verified accessions, and caveats; [`results/RESULTS.md`](results/RESULTS.md) for the analysis.
-
-## License
-
-MIT — see [`LICENSE`](LICENSE).
+Built with Claude Science; all study design, methodological decisions, and claims are the author's, who takes full responsibility for the content.
