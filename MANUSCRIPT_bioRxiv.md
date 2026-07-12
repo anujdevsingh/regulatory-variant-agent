@@ -227,9 +227,10 @@ than on decoupled ones (both 0.538) — but the confidence intervals overlap, so
 stratified effect is suggestive rather than significant at present sample size (Figure 2).
 
 ### rs6733839 anchors the mechanism across three measured layers
-The lead *BIN1* Alzheimer's variant rs6733839 — fine-mapped as the credible causal variant
-at this locus [9] and previously implicated in myeloid regulatory function [10] — is present
-in all three microglia layers with strong, measured signals (Table 3). The risk allele opens chromatin and raises *BIN1*
+The lead *BIN1* Alzheimer's variant rs6733839, fine-mapped as the credible causal variant
+at this locus [9], is present in all three microglia layers with strong, measured signals
+(Table 3). Functional regulatory variation in dementia-associated transcriptional networks
+has been characterized more broadly by massively parallel assays [10]. The risk allele opens chromatin and raises *BIN1*
 expression — the two native-genome readouts agree — while repressing episomal enhancer
 activity in the reporter assay. Both AlphaGenome and Borzoi call one layer correctly and the
 other backwards, each in a different direction; there is no single model that is "right"
