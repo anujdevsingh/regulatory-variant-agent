@@ -6,7 +6,7 @@ data, method, and a **definition of done**. Report honestly whichever way each
 result comes out — the paper is a negative + a mechanism, so a clean "no" is
 still a result. Do NOT overclaim.*
 
-**Author:** anujdevsingh · **Repo:** anujdevsingh/regulatory-variant-agent
+**Author:** anujdevsingh · **Repo:** anujdevsingh/regulatory-direction-independence
 **Created:** 2026-07-11 · **Scope:** ~3–5 weeks of mostly-analysis work (NOT hackathon scope)
 
 ---

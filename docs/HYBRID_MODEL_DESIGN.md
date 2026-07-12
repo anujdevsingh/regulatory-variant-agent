@@ -1,6 +1,6 @@
 # Hybrid multi-model variant-effect predictor — study & design
 
-**Project:** regulatory-variant-agent (BIN1 / rs6733839), Claude Science Researcher track
+**Project:** regulatory-direction-independence (BIN1 / rs6733839), Claude Science Researcher track
 **Phase 1 deliverable:** SOTA method survey + design of a hybrid ChromBPNet + AlphaGenome scoring method
 **Status:** design doc — no code run yet; AlphaGenome API key needed for the build phase
 

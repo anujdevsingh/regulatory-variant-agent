@@ -1,6 +1,6 @@
 # Predicting the direction of noncoding regulatory-variant effects from DNA sequence: a well-powered negative, and a mechanistic explanation
 
-**Project:** regulatory-variant-agent · **Anchor variant:** rs6733839 (chr2:127135234, C>T; AD-risk allele T; ~25 kb upstream of BIN1) · **Focus context:** microglia / brain / immune
+**Project:** regulatory-direction-independence · **Anchor variant:** rs6733839 (chr2:127135234, C>T; AD-risk allele T; ~25 kb upstream of BIN1) · **Focus context:** microglia / brain / immune
 
 ---
 
@@ -123,7 +123,7 @@ essentially unchanged (+0.18). The caQTL result is independent of that question.
 ## Reproducibility
 
 All data, splits, configs, scores, and figures are committed to the repository
-(`anujdevsingh/regulatory-variant-agent`). Chromosome split, seed=0, bootstrap
+(`anujdevsingh/regulatory-direction-independence`). Chromosome split, seed=0, bootstrap
 CIs on every accuracy/AUROC. AlphaGenome via API (1 Mb context, ATAC+DNASE,
 context-matched biosample tracks); Borzoi (johahi/borzoi-replicate-0, 524 kb,
 microglia/macrophage accessibility tracks) on an L40S GPU.

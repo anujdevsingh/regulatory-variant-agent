@@ -5,7 +5,7 @@ force the discipline that separates a real result from a fake one.
 
 ---
 
-> **You are working on the `regulatory-variant-agent` project. Read
+> **You are working on the `regulatory-direction-independence` project. Read
 > `docs/MODEL_TRAINING_BRIEF.md` and `results/MPRA_VALIDATION.md` first, then work
 > the staged plan in the brief.**
 >

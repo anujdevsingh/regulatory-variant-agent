@@ -1,4 +1,4 @@
-# regulatory-variant-agent
+# regulatory-direction-independence
 
 **Trace a noncoding disease variant to the transcription-factor motif it affects — directly from DNA sequence.**
 

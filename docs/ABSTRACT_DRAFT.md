@@ -1,6 +1,6 @@
 # ABSTRACT_DRAFT.md
 
-*Draft abstract for the regulatory-variant-agent finding. Written to the numbers
+*Draft abstract for the regulatory-direction-independence finding. Written to the numbers
 actually obtained (Phases 1-3). Update as/if the eQTL layer and Boltz co-fold land.*
 
 ## Title (working)

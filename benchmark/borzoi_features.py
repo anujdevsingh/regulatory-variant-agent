@@ -2,7 +2,7 @@
 """Extract Borzoi per-context accessibility-delta features for ALL harmonized variants
 (train+test), batched. Output: borzoi_features.json {variant_id: {ctx: delta,...}}."""
 import json, numpy as np, pandas as pd, urllib.request, io, time
-REPO="https://raw.githubusercontent.com/anujdevsingh/regulatory-variant-agent/main"
+REPO="https://raw.githubusercontent.com/anujdevsingh/regulatory-direction-independence/main"
 def fetch(path):
     for _ in range(6):
         try: return urllib.request.urlopen(f"{REPO}/{path}", timeout=60).read()
