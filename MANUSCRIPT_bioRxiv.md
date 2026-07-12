@@ -2,11 +2,11 @@
 
 **Anuj Dev Singh**^1^
 
-^1^ [Affiliation and full postal address to be completed by the author before submission]
+^1^ Independent Researcher, New Delhi, India
 
-**Correspondence:** [author email to be completed]
+**Correspondence:** Anuj Dev Singh, anujdev9928@gmail.com; web: https://www.codewithanuj.com/
 
-**ORCID:** [to be completed]
+**ORCID:** https://orcid.org/0009-0002-4374-3990
 
 ---
 
@@ -356,16 +356,20 @@ Not applicable.
 The author declares no competing interests.
 
 ### Funding
-[To be completed by the author.]
+This research received no specific grant from any funding agency in the public, commercial,
+or not-for-profit sectors. It was conducted independently by the author.
 
 ### Authors' contributions
 A.D.S. conceived the study, assembled the benchmark, performed all analyses, produced the
 figures, and wrote the manuscript.
 
 ### Acknowledgements
-Analyses were carried out with the assistance of an AI research agent operated under the
-author's direction and scientific review; all methodological decisions, interpretations, and
-final claims are the author's. We thank the Kosoy et al. authors and the AD Knowledge Portal
+This work was carried out during the Claude Science hackathon. Data assembly, analysis, and
+figure and manuscript preparation were performed by the author with the assistance of an
+AI research agent (Anthropic Claude, operated within the Claude Science environment) under
+the author's direction and scientific review. All study design choices, methodological
+decisions, interpretations, and final claims are the author's, and the author takes full
+responsibility for the content. We thank the Kosoy et al. authors and the AD Knowledge Portal
 for the microglia QTL resources, and the authors of the MPRA/SuRE datasets used here.
 
 ---
