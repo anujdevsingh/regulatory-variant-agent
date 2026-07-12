@@ -1,51 +1,79 @@
 # regulatory-direction-independence
 
-**Can sequence-to-function models predict the *direction* of a noncoding variant's regulatory effect? A benchmark, a negative result, and the mechanism behind it — in human microglia.**
+**Can sequence-to-function models predict the _direction_ of a noncoding variant's regulatory effect? A benchmark, a well-powered negative result, and the mechanism behind it — in human microglia.**
 
 Built with **Claude Science** for the *Built with Claude: Life Sciences* hackathon (Research track, Jul 2026).
 
-📄 **Preprint:** [`MANUSCRIPT_bioRxiv.pdf`](MANUSCRIPT_bioRxiv.pdf) — full journal-formatted manuscript (also [`MANUSCRIPT_bioRxiv.md`](MANUSCRIPT_bioRxiv.md)).
-📈 **Roadmap / provenance:** [`ROADMAP.md`](ROADMAP.md) — living log of every stage with config, seed, and data-split manifest.
+📄 **Preprint:** [`MANUSCRIPT_bioRxiv.pdf`](MANUSCRIPT_bioRxiv.pdf) · [`MANUSCRIPT_bioRxiv.md`](MANUSCRIPT_bioRxiv.md)  
+📈 **Provenance:** [`ROADMAP.md`](ROADMAP.md) — every stage with config, seed, and split manifest
 
 ---
 
-## The finding in one paragraph
+## TL;DR
 
-Sequence-to-function deep-learning models (Borzoi, AlphaGenome, and the DeepSEA/Basset lineage before them) predict genomic assay *tracks* with high accuracy and are increasingly used to interpret disease-associated noncoding variants. But the question a variant-interpretation pipeline actually needs answered is directional: does this variant push accessibility / expression **up or down** in the relevant cell type? We benchmarked that directly, in the microglia / brain / immune context where the disease biology lives. **On the fairest achievable test — chromatin-accessibility direction in the native cell type — every model is at chance:** AlphaGenome 0.537, Borzoi 0.551, motif-PWM floors, and even models trained in-distribution on the data itself, all statistically indistinguishable from a majority-class baseline (0.565). We then show *why*: in the **same 95 donors**, a variant's effect on chromatin accessibility and its effect on gene expression are **statistically independent** (sign concordance 0.506, 95% CI 0.455–0.556, p = 0.87). A model that reads one regulatory layer cannot recover the direction of another layer it does not read.
+Deep-learning models that read DNA (Borzoi, AlphaGenome, and the DeepSEA/Basset lineage) predict genomic assay *tracks* very well. But the question a disease-variant pipeline actually needs — **does this variant push accessibility / expression UP or DOWN in the relevant cell type?** — they answer at chance. We show this on a fair, chromosome-split benchmark in the microglia/brain/immune context, and then we show **why**: in the same donors, a variant's effect on chromatin accessibility and its effect on gene expression are **statistically independent**. A model that reads one layer cannot recover the direction of a layer it does not read.
+
+> **The whole study in one figure:**
+
+![Study summary — a well-powered negative, and why](results/fig_writeup_summary.png)
+
+*Left: on the pivotal native-microglia caQTL test, every model sits at chance. Right: the Alzheimer's risk allele of rs6733839 does two opposite things depending on which layer you measure — so each model looks "right" on one layer and "wrong" on the other. The decoupling, not any single model, is the finding.*
 
 ---
 
-## Results
+## The research arc, start to finish
 
-### 1. No model predicts accessibility direction in the native cell type
+The project ran as four staged phases. Each figure below is the deliverable of one phase, in order.
 
-![Directional benchmark in native microglia — all models at chance](results/fig_caqtl_result.png)
+### Phase 0 — Build a fair benchmark
 
-Direction accuracy with 95% bootstrap CIs on the held-out human-microglia caQTL test (95-donor map). AlphaGenome and Borzoi are scored on their intended task, in their intended cell context, and neither separates from the majority-class baseline. This is not a model-capacity problem — in-distribution training lands at chance too.
+Before touching a model, we assembled a held-out test set of noncoding variants with **laboratory-measured effect direction**, spanning nine cell contexts (6,377 variant×context measurements), and split it by **whole chromosome** (never by variant) so linkage disequilibrium cannot leak between train and test.
 
-### 2. The decoupling is systematic, at scale
+![Supplementary Figure S1 — chromosome-split composition](results/fig_S1_split_manifest.png)
 
-![Accessibility vs activity direction decoupling across contexts](results/decoupling/fig_phase1_decoupling.png)
+*(a) Variants per chromosome; the four held-out test chromosomes (2, 6, 11, 19; seed 0) in red — chr2 is forced to test to retain BIN1/rs6733839. (b) The chromosome-level split still preserves all nine cell contexts in both train and test.*
 
-Across paired regulatory layers, the sign of a variant's accessibility effect does not predict the sign of its activity effect. The relationship sits at coin-flip across every stratification tested.
+### Phase 1 — Score every model on the identical set
 
-### 3. Same-donor caQTL vs eQTL — the clean number
+We scored both frontier incumbents (**AlphaGenome** via API, **Borzoi** open weights), two floor baselines (a JASPAR motif-PWM Δ-score and a logistic-regression on motif features), and a purpose-built directional model (the **"wedge" model** — a gradient-boosted model on motif + Borzoi-embedding + grammar features, trained to target exactly the directional question). All scored on the same held-out set, with 95% bootstrap CIs.
 
-![Same-donor caQTL vs eQTL sign concordance](results/decoupling/fig_caqtl_eqtl_clean.png)
+![Full scoreboard — incumbents, floors, and the directional model](results/fig_final_scoreboard.png)
 
-The definitive test, free of any cross-cell-type confound: in the *same 95 microglia donors*, chromatin-accessibility QTLs and expression QTLs agree on direction only 50.6% of the time (n = 354 variants significant in both layers; p = 0.87). Accessibility and expression effect-directions are statistically independent.
+*Direction accuracy with 95% bootstrap CIs across contexts. Off-wedge (K562, HepG2), every model clears chance — sequence carries directional signal for episomal reporter activity. But in the microglia/brain/immune target ("on-wedge, pooled"), **every model — incumbents, floors, and ours — collapses to chance.** The directional model is a characterized negative: it does not beat the incumbents where it matters, and we report that honestly.*
 
-### 4. rs6733839 (BIN1 / Alzheimer's) anchors the mechanism
+Zooming into the single fairest test — chromatin-accessibility direction in the **native** cell type (the 95-donor Kosoy microglia caQTL map), the intended task in the intended context:
 
-![Boltz-2 co-fold: MEF2A on the BIN1 enhancer, both alleles](results/decoupling/fig_boltz_cofold.png)
+![The pivotal test — native microglia caQTL, both incumbents scored](results/fig_caqtl_result.png)
 
-The lead *BIN1* Alzheimer's variant makes it concrete. It **opens** chromatin (caQTL Beta +0.147, Z 3.3) and **raises** BIN1 expression (eQTL Beta +0.482, Z 6.4) in microglia — the two native-genome layers agree — while **repressing** episomal enhancer activity in a reporter assay. Three measured layers, not all in the same direction. A Boltz-2 protein–DNA co-fold shows the risk allele grips the MEF2A transcription factor more tightly (287 vs 255 interface contacts, +12.5%; both alleles high-confidence, interface pTM 0.978), consistent with the risk allele creating a stronger MEF2 site.
+*(A) AlphaGenome (0.537), Borzoi (0.551), floors, and in-distribution controls all fall at or below the majority-class baseline (0.565). Not a model-capacity problem — training directly on the caQTL data lands at chance too. (B) rs6733839 makes it concrete: the risk-T allele opens chromatin but represses episomal activity, so each model is "right" on one layer and "wrong" on the other.*
+
+### Phase 2 — Explain the failure: the layers decouple
+
+If the direction isn't recoverable, why? We tested whether a variant's effect on one regulatory layer predicts its effect on another.
+
+![Phase 1 decoupling at scale](results/decoupling/fig_phase1_decoupling.png)
+
+*(A) Accessibility (caQTL) vs activity (MPRA/SuRE) effect signs scatter with no diagonal structure. (B) Sign concordance sits at the independence line (0.5) in every stratum. (C) Models are marginally better on concordant than decoupled variants, but not significantly — the decoupling is what limits them.*
+
+The clean, confound-free version — the definitive number — comes from the **same 95 microglia donors**, comparing chromatin-accessibility QTLs against expression QTLs:
+
+![Clean same-donor caQTL vs eQTL](results/decoupling/fig_caqtl_eqtl_clean.png)
+
+*(A) Per-variant caQTL effect vs eQTL effect in the same donors; rs6733839 (BIN1) starred. (B) Sign concordance is indistinguishable from independence at every significance stratum — 0.506 (95% CI 0.455–0.556, p = 0.87) for the 354 variants significant in both layers. **Chromatin accessibility and gene expression effect-directions are statistically independent.***
+
+### Phase 3 — Anchor the mechanism structurally
+
+Finally, we grounded the story on the lead variant. rs6733839 **opens** chromatin (caQTL +, Z 3.3) and **raises** BIN1 expression (eQTL +, Z 6.4) in microglia — the native-genome layers agree — while **repressing** an isolated enhancer in a reporter. A Boltz-2 protein–DNA co-fold explains the direction:
+
+![Boltz-2 co-fold — tighter MEF2A interface at the risk allele](results/decoupling/fig_boltz_cofold.png)
+
+*Both alleles co-folded with the MEF2A dimer in a shared orientation (both high-confidence, interface pTM 0.978). The risk-T allele forms a **tighter** protein–DNA interface — 287 vs 255 contacts within 4 Å (+12.5%) — consistent with the risk allele strengthening a MEF2 binding site.*
 
 ---
 
 ## Why this matters
 
-The practical takeaway for anyone using sequence models to interpret variants: **do not trust a single-layer model's direction call on the variants that matter most for disease.** The models are excellent at what they were trained for (track prediction) and unreliable at the directional question they are increasingly asked. This repo provides an open, chromosome-split benchmark and every per-variant score so the field has a like-for-like way to measure directional accuracy.
+For anyone using sequence models to interpret variants: **do not trust a single-layer model's direction call on the variants that matter most for disease.** These models are excellent at what they were trained for (track prediction) and unreliable at the directional question they are increasingly asked to answer. This repo provides an open, chromosome-split benchmark and every per-variant score, so the field has a like-for-like way to measure directional accuracy — and a mechanistic reason the ceiling exists.
 
 ---
 
@@ -53,12 +81,12 @@ The practical takeaway for anyone using sequence models to interpret variants: *
 
 ```
 bench/         harmonized benchmark: variants with measured direction, split manifest, per-model scores
-results/       figures + result tables (caQTL scoreboard, floor baselines, ...)
-  decoupling/  Phase 1–3 decoupling analysis, same-donor caQTL∩eQTL, Boltz co-fold, structures
+results/       main-text + summary figures, result tables
+  decoupling/  Phase 1-3 decoupling analysis, same-donor caQTL∩eQTL, Boltz co-fold, structures
 docs/          publication plan, hackathon summary, demo video guide
-MANUSCRIPT_bioRxiv.md / .pdf    the preprint
+MANUSCRIPT_bioRxiv.md / .pdf    the preprint (10 pages, 4 main + 1 supplementary figure)
 ROADMAP.md     living provenance log (per-stage config, seed, split)
-score_variant.py                the sequence-based variant-scoring tool (see below)
+score_variant.py                sequence-based variant-scoring tool (see below)
 ```
 
 Everything is committed per analysis stage with configuration and random seed. Genome build GRCh38 throughout.
@@ -78,7 +106,7 @@ Variant scoring used the AlphaGenome API (non-commercial terms) and Borzoi open 
 
 ## The `score_variant.py` tool
 
-The repo also contains the sequence-based variant-interpretation tool built in the earlier phase of the project: given an rsID, it predicts a variant's chromatin-accessibility effect from a pretrained **ChromBPNet** model, runs in-silico mutagenesis + attribution to localize which bases the model weights, and matches the region to **JASPAR** motifs.
+The repo also contains the sequence-based variant-interpretation tool built in the project's first phase: given an rsID, it predicts a variant's chromatin-accessibility effect from a pretrained **ChromBPNet** model, runs in-silico mutagenesis + attribution to localize which bases the model weights, and matches the region to **JASPAR** motifs.
 
 ```bash
 pip install -r requirements.txt
@@ -87,7 +115,7 @@ python score_variant.py --rsid rs6733839 \
     --model models/Microglia_chrombpnet_nobias.h5 --outdir results/
 ```
 
-It supports `--calibrate PEAK_BED` (percentile + z-score against a common-SNP null) and `--credible-set TABLE.xlsx` (score a published fine-mapping credible set and test whether the fine-mapped variant is also the largest-effect one). This tool is a *component* of the project, not its headline result — the benchmark and the decoupling finding above are the contribution.
+Supports `--calibrate PEAK_BED` (percentile + z-score against a common-SNP null) and `--credible-set TABLE.xlsx` (score a published fine-mapping credible set and test whether the fine-mapped variant is also the largest-effect one). This tool is a *component* of the project — the benchmark and the decoupling finding above are the contribution.
 
 ---
 
