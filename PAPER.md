@@ -1,7 +1,7 @@
 # Chromatin accessibility and enhancer activity effect-directions are statistically independent for noncoding variants, and this limits sequence-model variant interpretation
 
 **Anuj Dev Singh**
-Repository: `anujdevsingh/regulatory-variant-agent` · Preprint draft · 2026-07-12
+Repository: `anujdevsingh/regulatory-direction-independence` · Preprint draft · 2026-07-12
 
 ---
 
@@ -278,7 +278,7 @@ We state these plainly, as they bound the claims above.
 ## 6. Data and code availability
 
 All data, split manifests, per-variant scores, figures, and analysis code are in
-the repository `anujdevsingh/regulatory-variant-agent` under `results/` and
+the repository `anujdevsingh/regulatory-direction-independence` under `results/` and
 `bench/`, committed per stage with configuration and seed. Key public sources:
 Kosoy et al. 2022 microglia caQTL/eQTL (Synapse syn30308248 / syn30308484;
 AD Knowledge Portal); 2025 context-dependent AD-MPRA; SuRE raQTL

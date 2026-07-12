@@ -335,7 +335,7 @@ We state these plainly, as they bound the claims above.
 ### Availability of data and materials
 All data, split manifests, per-variant model scores, figures, and analysis code supporting
 the conclusions of this article are available in the repository
-`github.com/anujdevsingh/regulatory-variant-agent` under the `bench/` and `results/`
+`github.com/anujdevsingh/regulatory-direction-independence` under the `bench/` and `results/`
 directories, committed per analysis stage with configuration and random seed. Primary public
 datasets: human-microglia caQTL and meta-eQTL summary statistics (Kosoy et al. [6]; AD
 Knowledge Portal / Synapse syn30308248 and syn30308484), which are registered-access — freely
