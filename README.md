@@ -4,7 +4,9 @@
 
 Built with **Claude Science** for the *Built with Claude: Life Sciences* hackathon (Research track, Jul 2026).
 
-📄 **Preprint:** [`MANUSCRIPT_bioRxiv.pdf`](MANUSCRIPT_bioRxiv.pdf) · [`MANUSCRIPT_bioRxiv.md`](MANUSCRIPT_bioRxiv.md)  
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21332017.svg)](https://doi.org/10.5281/zenodo.21332017)
+
+📄 **Preprint (Zenodo, CC-BY 4.0):** https://doi.org/10.5281/zenodo.21332017 · local copy [`MANUSCRIPT_bioRxiv.pdf`](MANUSCRIPT_bioRxiv.pdf) · [`MANUSCRIPT_bioRxiv.md`](MANUSCRIPT_bioRxiv.md)  
 📈 **Provenance:** [`ROADMAP.md`](ROADMAP.md) — every stage with config, seed, and split manifest
 
 ---
@@ -124,3 +126,29 @@ Supports `--calibrate PEAK_BED` (percentile + z-score against a common-SNP null)
 If you use this benchmark or the analysis, please cite the preprint (see [`MANUSCRIPT_bioRxiv.md`](MANUSCRIPT_bioRxiv.md) for the full reference list and author details).
 
 Built with Claude Science; all study design, methodological decisions, and claims are the author's, who takes full responsibility for the content.
+
+
+---
+
+## Cite this work
+
+If you use this benchmark, the paired-layer independence statistic, or the per-variant scores, please cite the Zenodo record:
+
+> Singh, A. D. (2026). *Effect-direction of noncoding regulatory variants is not predictable from sequence because chromatin accessibility and gene expression decouple: a benchmark and mechanistic analysis in human microglia.* Zenodo. https://doi.org/10.5281/zenodo.21332017
+
+**BibTeX**
+```bibtex
+@misc{singh2026direction,
+  author       = {Singh, Anuj Dev},
+  title        = {Effect-direction of noncoding regulatory variants is not predictable
+                  from sequence because chromatin accessibility and gene expression
+                  decouple: a benchmark and mechanistic analysis in human microglia},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.21332017},
+  url          = {https://doi.org/10.5281/zenodo.21332017}
+}
+```
+
+- **Concept DOI** (always latest version): [10.5281/zenodo.21332017](https://doi.org/10.5281/zenodo.21332017)
+- **This version**: [10.5281/zenodo.21332018](https://doi.org/10.5281/zenodo.21332018)
