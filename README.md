@@ -121,15 +121,6 @@ Supports `--calibrate PEAK_BED` (percentile + z-score against a common-SNP null)
 
 ---
 
-## Citation
-
-If you use this benchmark or the analysis, please cite the preprint (see [`MANUSCRIPT_bioRxiv.md`](MANUSCRIPT_bioRxiv.md) for the full reference list and author details).
-
-Built with Claude Science; all study design, methodological decisions, and claims are the author's, who takes full responsibility for the content.
-
-
----
-
 ## Cite this work
 
 If you use this benchmark, the paired-layer independence statistic, or the per-variant scores, please cite the Zenodo record:
@@ -152,3 +143,5 @@ If you use this benchmark, the paired-layer independence statistic, or the per-v
 
 - **Concept DOI** (always latest version): [10.5281/zenodo.21332017](https://doi.org/10.5281/zenodo.21332017)
 - **This version**: [10.5281/zenodo.21332018](https://doi.org/10.5281/zenodo.21332018)
+
+Built with Claude Science; all study design, methodological decisions, and claims are the author's, who takes full responsibility for the content.
